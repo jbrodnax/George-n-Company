@@ -55,6 +55,7 @@ public class AddressBook implements Serializable {
 	
 	//If the requested contact exists, the contact's entries index number is set by haveContact
 	//The contact at index i is then overwritten by shifting all later contact entries down by one
+	//This is also an inefficient method. Basically, using an array to store contatcs is just bad. I'll implement a dictionary soon
 	public int deleteContact(String s){
 		int index = haveContact(s);
 		if(index >= 0){
@@ -81,6 +82,7 @@ public class AddressBook implements Serializable {
 	}
 	
 	//event loop
+	//Wont need this functionality once the GUI is working
 	public static void main(String[] args) throws IOException{
 		Scanner stdin = new Scanner(System.in);
 		
