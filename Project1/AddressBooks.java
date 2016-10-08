@@ -9,21 +9,6 @@ public class AddressBooks
     final static String CREATE_WINDOW = "new_win";
     private Point framePlace = null;						//holds screen placement of frames
  ////////create the windows you can open when you are looking at your list of books  
-    public void createAddBookWindow()
-    {
-        JFrame createBook = new AddBookFrame();				//new frame object for adding addBook
-        positionWindow(createBook);
-        createBook.setSize(new Dimension(300, 200));		//sets size of frame where you add a book
-        createBook.setVisible(true);						//makes frame visible
-    }
-    
-    public void createDeleteBookWindow()
-    {
-        JFrame deleteBook = new DeleteBookFrame();			//new frame object for deleting addBook
-        positionWindow(deleteBook);
-        deleteBook.setSize(new Dimension(300, 200));		//sets size of frame where you add a book
-        deleteBook.setVisible(true);						//makes frame visible
-    }
     
     public void createOpenBookWindow()
     {
@@ -31,22 +16,6 @@ public class AddressBooks
         positionWindow(openBook);
         openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
         openBook.setVisible(true);							//makes frame visible
-    }
-    
-    public void createImportBookWindow()
-    {
-        JFrame importBook = new ImportBookFrame();			//new frame object for importing single addBook
-        positionWindow(importBook);
-        importBook.setSize(new Dimension(300, 200));		//sets size of frame where you add a book
-        importBook.setVisible(true);						//makes frame visible
-    }
-    
-    public void createExportBookWindow()
-    {
-        JFrame exportBook = new ExportBookFrame();			//new frame object for exporting single addBook
-        positionWindow(exportBook);
-        exportBook.setSize(new Dimension(300, 200));		//sets size of frame where you add a book
-        exportBook.setVisible(true);						//makes frame visible
     }
     
     public void positionWindow(JFrame frame)				//sets location for multiple windows
@@ -75,7 +44,8 @@ public class AddressBooks
         {
             public void actionPerformed(ActionEvent args) 
             {
-            	createAddBookWindow();
+                String bookName;
+        		bookName = JOptionPane.showInputDialog("Book name");
             }
         });
         
@@ -83,7 +53,22 @@ public class AddressBooks
         {
             public void actionPerformed(ActionEvent args) 
             {
-            	createDeleteBookWindow();						//creates delete window dialogue window
+            	int confirm = JOptionPane.showConfirmDialog(null, "Delete selected address book?", "Confirm Delete",
+            	JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            	if (confirm == JOptionPane.NO_OPTION) 
+            	{
+            	      System.out.println("No button clicked");
+            	} 
+            	else if (confirm == JOptionPane.YES_OPTION) 
+            	{
+            	      System.out.println("Yes button clicked");
+            	} 
+            	else if (confirm == JOptionPane.CLOSED_OPTION) 
+            	{
+            	      System.out.println("JOptionPane closed");
+            	}
+            	  
+            	
             }
         });
         
@@ -99,7 +84,8 @@ public class AddressBooks
         {
             public void actionPerformed(ActionEvent args) 
             {
-            	createImportBookWindow();						//creates import book dialogue box
+                String fileName;
+        		fileName = JOptionPane.showInputDialog("Enter file to import from");	//creates import book dialogue box
             }
         });
         
@@ -107,7 +93,8 @@ public class AddressBooks
         {
             public void actionPerformed(ActionEvent args) 
             {
-            	createExportBookWindow();						//creates export book dialogue box
+                String bookName;
+        		bookName = JOptionPane.showInputDialog("Enter file to export to");	//creates export book dialogue box
             }
         });
         
@@ -136,54 +123,6 @@ public class AddressBooks
     {
     	runGUI();
     }
- 
-    class AddBookFrame extends JFrame implements ActionListener //single book
-    {
-    	public AddBookFrame() 
-        {
-            super("Adding a book");
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
- 
-            JButton button = new JButton("Create book");
-            button.addActionListener(this);
- 
-            Container contentPane = getContentPane();
-            contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-            contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(button);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
-        }
- 
-        public void actionPerformed(ActionEvent e) 
-        {
-            setVisible(false);
-            dispose();
-        }
-    }
-    
-    class DeleteBookFrame extends JFrame implements ActionListener //single book
-    {
-    	public DeleteBookFrame() 
-        {
-            super("Deleting a book");
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
- 
-            JButton button = new JButton("Delete book");
-            button.addActionListener(this);
- 
-            Container contentPane = getContentPane();
-            contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-            contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(button);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
-        }
- 
-        public void actionPerformed(ActionEvent e) 
-        {
-            setVisible(false);
-            dispose();
-        }
-    }
 
     class OpenBookFrame extends JFrame implements ActionListener //single book
     {
@@ -207,53 +146,5 @@ public class AddressBooks
             setVisible(false);
             dispose();
         }
-    }
-    
-    class ImportBookFrame extends JFrame implements ActionListener //single book
-    {
-    	public ImportBookFrame() 
-        {
-            super("Importing a book");
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
- 
-            JButton button = new JButton("Import book");
-            button.addActionListener(this);
- 
-            Container contentPane = getContentPane();
-            contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-            contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(button);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
-        }
- 
-        public void actionPerformed(ActionEvent e) 
-        {
-            setVisible(false);
-            dispose();
-        }
-    }
-    
-    class ExportBookFrame extends JFrame implements ActionListener
-    {
-    	public ExportBookFrame() 
-        {
-            super("Exporting a book");
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single window without exiting program
- 
-            JButton button = new JButton("Export book");
-            button.addActionListener(this);
- 
-            Container contentPane = getContentPane();
-            contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-            contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(button);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
-        }
- 
-        public void actionPerformed(ActionEvent e) 
-        {
-            setVisible(false);
-            dispose();
-        }
-    }   
+    } 
 }
