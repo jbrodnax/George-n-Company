@@ -34,13 +34,13 @@ public class AddressBooks
 
     protected JComponent bookListButtonPane() 					//Create the buttons which go in the book list window
     {
-        JButton addButton = new JButton("Add");
-        JButton deleteButton = new JButton("Delete");
-        JButton openButton = new JButton("Open");
-        JButton importButton = new JButton("Import");
-        JButton exportButton = new JButton("Export");
+        JButton addBookButton = new JButton("Add");
+        JButton deleteBookButton = new JButton("Delete");
+        JButton openBookButton = new JButton("Open");
+        JButton importBookButton = new JButton("Import");
+        JButton exportBookButton = new JButton("Export");
         
-        addButton.addActionListener(new ActionListener() 
+        addBookButton.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent args) 
             {
@@ -49,7 +49,7 @@ public class AddressBooks
             }
         });
         
-        deleteButton.addActionListener(new ActionListener() 	//action listener for delete book button
+        deleteBookButton.addActionListener(new ActionListener() 	//action listener for delete book button
         {
             public void actionPerformed(ActionEvent args) 
             {
@@ -57,22 +57,20 @@ public class AddressBooks
             	JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             	if (confirm == JOptionPane.NO_OPTION) 
             	{
-            	      System.out.println("No button clicked");
+            		System.out.println("No button in delete book clicked");
             	} 
             	else if (confirm == JOptionPane.YES_OPTION) 
             	{
-            	      System.out.println("Yes button clicked");
+            		System.out.println("Yes button in delete book clicked");
             	} 
             	else if (confirm == JOptionPane.CLOSED_OPTION) 
             	{
-            	      System.out.println("JOptionPane closed");
+            		System.out.println("JOptionPane in delete book closed");
             	}
-            	  
-            	
             }
         });
         
-        openButton.addActionListener(new ActionListener() 		//action listener for open book button
+        openBookButton.addActionListener(new ActionListener() 		//action listener for open book button
         {
             public void actionPerformed(ActionEvent args) 
             {
@@ -80,7 +78,7 @@ public class AddressBooks
             }
         });
         
-        importButton.addActionListener(new ActionListener() 	//action listener for import book button
+        importBookButton.addActionListener(new ActionListener() 	//action listener for import book button
         {
             public void actionPerformed(ActionEvent args) 
             {
@@ -89,7 +87,7 @@ public class AddressBooks
             }
         });
         
-        exportButton.addActionListener(new ActionListener() 	//action listener for export book button
+        exportBookButton.addActionListener(new ActionListener() 	//action listener for export book button
         {
             public void actionPerformed(ActionEvent args) 
             {
@@ -98,13 +96,13 @@ public class AddressBooks
             }
         });
         
-        JPanel pane = new JPanel();								//put the buttons in a pane
-        pane.add(addButton);
-        pane.add(deleteButton);
-        pane.add(openButton);
-        pane.add(importButton);
-        pane.add(exportButton);
-        return pane;
+        JPanel bookList = new JPanel();								//put the buttons in a pane
+        bookList.add(addBookButton);
+        bookList.add(deleteBookButton);
+        bookList.add(openBookButton);
+        bookList.add(importBookButton);
+        bookList.add(exportBookButton);
+        return bookList;
     }
     
     private static void runGUI() 	//create the initial gui window
@@ -130,15 +128,89 @@ public class AddressBooks
         {
             super("Opened book");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
- 
-            JButton button = new JButton("Add person");
-            button.addActionListener(this);
+            
+            JButton addPersonButton = new JButton("Add");
+            JButton deletePersonButton = new JButton("Delete");
+            JButton viewPersonButton = new JButton("Open");
+            JButton zipSortButton = new JButton("Zip sort");
+            JButton nameSortButton = new JButton("Name sort");
+            JButton editPersonButton = new JButton("Edit");
+            
+            addPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("add person button clicked");
+            	}
+            });
+            
+            deletePersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+                public void actionPerformed(ActionEvent args) 
+                {
+                	int confirm = JOptionPane.showConfirmDialog(null, "Delete selected person?", "Confirm Delete",
+                	JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                	if (confirm == JOptionPane.NO_OPTION) 
+                	{
+                		System.out.println("No button in delete person clicked");
+                	} 
+                	else if (confirm == JOptionPane.YES_OPTION) 
+                	{
+                		System.out.println("Yes button in delete person clicked");
+                	} 
+                	else if (confirm == JOptionPane.CLOSED_OPTION) 
+                	{
+                		System.out.println("JOptionPane in delete person closed");
+                	}
+                }
+            });
+            
+            viewPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("view person button clicked");
+            	}
+            });
+            
+            zipSortButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("zip sort button clicked");
+            		//////////////////////////////////////////////////this is where you call the function
+            		/////////////////////////////////////////////////that sorts by zip
+            	}
+            });
+            
+            nameSortButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("name sort button clicked");
+            		//////////////////////////////////////////////////this is where you call the function
+            		/////////////////////////////////////////////////that sorts by name
+            	}
+            });
+            
+            editPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("edit person button clicked");
+            	}
+            });
  
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(button);
-            button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
+            contentPane.add(addPersonButton);
+            contentPane.add(deletePersonButton);
+            contentPane.add(viewPersonButton);
+            contentPane.add(zipSortButton);
+            contentPane.add(nameSortButton);
+            contentPane.add(editPersonButton);
+            //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
  
         public void actionPerformed(ActionEvent e) 
