@@ -1,0 +1,1 @@
+Here is a very rudimentary beginning of a front end. I'd say its about 40% of the GUI we need. I know it's not super clean, but I tried to label the vars and the functions so that they're self explanatory... Does anyone know if I have to make action listeners for each button, or if I can reuse the same one? Maybe put it in a function and send it parameters to work with?
