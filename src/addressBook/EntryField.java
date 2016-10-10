@@ -9,6 +9,11 @@ public class EntryField {
 		setInfo(info);
 	}
 	
+	public int isAddress(String addr){
+		
+		return -1;
+	}
+	
 	public String getInfoType(){
 		return this.InfoType;
 	}

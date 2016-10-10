@@ -15,11 +15,10 @@ public class Contacts implements Serializable {
 	private String address;
 	private String email;
 	ArrayList<EntryField> Info = new ArrayList<EntryField>();
-	//public EntryField[] Info;
 	
 	//constructor
 	Contacts(String first, String last, String address, String email){
-		this.setFirst(first);
+		this.first = first;
 		this.last = last;
 		this.address = address;
 		this.email = email;

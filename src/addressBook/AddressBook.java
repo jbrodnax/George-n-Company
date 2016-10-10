@@ -13,11 +13,12 @@ public class AddressBook implements Serializable {
 	
 	//public Contacts[] entries;			//Array of Contacts for this.AddressBook
 	ArrayList<Contacts> entries = new ArrayList<Contacts>();
+	private String bookName;
 
 	//Initializes new AddressBook
 	//For the time being, default max number of contacts per book is 10
-	public AddressBook(){
-		
+	public AddressBook(String Name){
+		bookName = Name;
 	}
 	
 	//Adds new Contact instance to this book's entries array
@@ -82,8 +83,17 @@ public class AddressBook implements Serializable {
 		System.out.println("Enter you menu option:");
 	}
 	
+	public void setBookName(String Name){
+		bookName = Name;
+	}
+	
+	public String getBookName(){
+		return this.bookName;
+	}
+	
 	//event loop
-	public static void main(String[] args) throws IOException{
+	
+	/* public static void main(String[] args) throws IOException{
 		Scanner stdin = new Scanner(System.in);
 		
 		AddressBook aBook = new AddressBook();
@@ -94,7 +104,7 @@ public class AddressBook implements Serializable {
 		//menu();
 		// int choice = stdin.nextInt();
 		
-	/*	while(choice != 8){
+		while(choice != 8){
 			if(choice == 1){
 				if(aBook.numContacts() < 10){
 					System.out.println("First Name:");
@@ -157,7 +167,7 @@ public class AddressBook implements Serializable {
 			}
 			menu();
 			choice = stdin.nextInt();
-		} */
+		} 
 		stdin.close();
-	}
+	} */
 }
