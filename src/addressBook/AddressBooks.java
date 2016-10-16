@@ -1,27 +1,42 @@
+package addressBook;
+
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class AddressBooks
 {
     final static String CREATE_WINDOW = "new_win";
     private Point framePlace = null;						//holds screen placement of frames
     ////////create the windows you can open when you are looking at your list of books
+    ArrayList<AddressBook> myAddressBooks = new ArrayList<AddressBook>();  
+    DefaultListModel<String> bookListModel = new DefaultListModel<String>();
+    JList<String> jlist = new JList<String>(bookListModel);
     
-    public void createOpenBookWindow()
+    public void createOpenBookWindow(AddressBook book)
     {
-        JFrame openBook = new OpenBookFrame();				//new frame object for viewing addBook
+        JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
         positionWindow(openBook);
         openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
         openBook.setVisible(true);							//makes frame visible
         //openBook.pack();
     }
     
-    public void createContactPages()
+    public void updateBookLibrary(){						//called when a new book is created. it updates the listOfBooks
+    	bookListModel.clear();													//to display the newly created book
+    		for(int i=0;i<myAddressBooks.size();i++){
+    			bookListModel.addElement(myAddressBooks.get(i).getBookName());
+    		}
+      }
+    
+    public void createContactPages(Contacts c, OpenBookFrame b)
     {
-        JFrame contactPage = new ContactPages();
+        JFrame contactPage = new ContactPages(c, b);
         positionWindow(contactPage);
         contactPage.setSize(400, 500);
         contactPage.setVisible(true);
@@ -42,6 +57,22 @@ public class AddressBooks
         }
     }
     
+    protected JComponent bookListLibraryPane(){					//creates JPanel component for the textArea displaying
+    	 	JPanel bookLibrary = new JPanel();						//all available books
+    	 	jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	 	jlist.addListSelectionListener(new ListSelectionListener(){
+   
+    			@Override
+    			public void valueChanged(ListSelectionEvent e) {
+    				// TODO Auto-generated method stub
+  			
+    		}});
+    	   	JScrollPane scrollPane = new JScrollPane(jlist);
+    	   	bookLibrary.add(scrollPane);
+   	
+    	  	return bookLibrary;
+    	   }
+    
     protected JComponent bookListButtonPane() 					//Create the buttons which go in the book list window
     {
         JButton addBookButton = new JButton("Add");
@@ -56,6 +87,9 @@ public class AddressBooks
             {
                 String bookName;
                 bookName = JOptionPane.showInputDialog("Book name");
+                System.out.println(bookName);
+                myAddressBooks.add(new AddressBook(bookName));
+               	updateBookLibrary();
             }
         });
         
@@ -84,7 +118,10 @@ public class AddressBooks
                                          {
             public void actionPerformed(ActionEvent args)
             {
-                createOpenBookWindow();							//creates single address book window
+            	int index = jlist.getSelectedIndex();
+              	AddressBook book = myAddressBooks.get(index);
+               	System.out.println("Opening Book: "+book.getBookName()+"\n");
+               	createOpenBookWindow(book);							//creates single addre
             }
         });
         
@@ -122,6 +159,7 @@ public class AddressBooks
         AddressBooks bookList = new AddressBooks();
         Container contentPane = bookListFrame.getContentPane();
         contentPane.add(bookList.bookListButtonPane(), BorderLayout.PAGE_END);
+        contentPane.add(bookList.bookListLibraryPane(), BorderLayout.PAGE_START);
         bookListFrame.setSize(new Dimension(400, 500));					//sets size of frame holding list of books
         bookListFrame.setLocationRelativeTo(null); 						//center it
         bookListFrame.setVisible(true);									//make it visible
@@ -135,13 +173,26 @@ public class AddressBooks
     
     class OpenBookFrame extends JFrame implements ActionListener //single book
     {
-        public OpenBookFrame()
+    
+    	private AddressBook Book;
+      	DefaultListModel<String> ContactListModel = new DefaultListModel<String>();
+        JList<String> jlist = new JList<String>(ContactListModel);
+        OpenBookFrame thisFrame = this;
+       
+        public void updateContactList(){						
+        	ContactListModel.clear();													
+         	for(int i=0;i<Book.entries.size();i++){
+          		ContactListModel.addElement(Book.getContact(i).getFirst());
+         	}
+        }
+    	
+        public OpenBookFrame(AddressBook book)
         {
             super("Opened book");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
             
             //Implement Jlist here to allow people to select the user for options
-            
+            this.Book = book;
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
             JButton viewPersonButton = new JButton("Open");
@@ -149,12 +200,18 @@ public class AddressBooks
             JButton nameSortButton = new JButton("Name sort");
             JButton editPersonButton = new JButton("Edit");
             
+            for(int i=0;i<Book.entries.size();i++){
+            	ContactListModel.addElement(Book.getContact(i).getFirst());
+            }
+            
             addPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
                                               {
                 public void actionPerformed(ActionEvent args)
                 {
-                    createContactPages();
-                    System.out.println("add person button clicked");
+             		System.out.println("add person button clicked");
+            		Contacts fake_person = new Contacts("John", "Brodnax", "1515", "jbrodnax");
+            		Book.addContact(fake_person);
+            		updateContactList();
                 }
             });
             
@@ -183,8 +240,12 @@ public class AddressBooks
                                                {
                 public void actionPerformed(ActionEvent args)
                 {
-                    createContactPages();  //Need it to adjust it to simply opening a new book
+                	int index = jlist.getSelectedIndex();
+                	Contacts c = Book.getContact(index);
+                    createContactPages(c, thisFrame);  //Need it to adjust it to simply opening a new book
                     System.out.println("view person button clicked");
+                    updateContactList();
+                    
                 }
             });
             
@@ -212,16 +273,30 @@ public class AddressBooks
                                                {
                 public void actionPerformed(ActionEvent args)
                 {
-                    createContactPages(); //edit to allow person to edit
+                	int index = jlist.getSelectedIndex();
+                	Contacts c  = Book.getContact(index);
+                    createContactPages(c, thisFrame); //edit to allow person to edit
                     System.out.println("edit person button clicked");
                 }
             });
+            
+            jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+           	jlist.addListSelectionListener(new ListSelectionListener(){
+     
+           			@Override
+           			public void valueChanged(ListSelectionEvent e) {
+             				// TODO Auto-generated method stub
+          				
+           	}});
+           	
+            JScrollPane scrollPane = new JScrollPane(jlist);
             
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             contentPane.add(addPersonButton);
             contentPane.add(deletePersonButton);
+            contentPane.add(scrollPane);
             contentPane.add(viewPersonButton);
             contentPane.add(zipSortButton);
             contentPane.add(nameSortButton);
@@ -238,9 +313,18 @@ public class AddressBooks
     
     class ContactPages extends JFrame implements ActionListener
     {
-        public ContactPages() {
+    	
+    	public Contacts Contact;
+    	public OpenBookFrame BookFrame;
+    	private AddressBook Book;
+    	private String firstName;
+    	private String lastName;
+    	private String email;
+    	
+        public ContactPages(Contacts c, OpenBookFrame bookFrame) {
             super("Contact Information");
-            
+            this.Contact = c;
+            this.BookFrame = bookFrame;
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             
             JButton saveButton = new JButton("Save");
@@ -253,12 +337,18 @@ public class AddressBooks
             final JTextField stateAddressField = new JTextField("State: ");
             final JTextField zipAddressField = new JTextField("Zip code: ");
             final JTextField emailField = new JTextField("Email: ");
+            nameField.setText(c.getFirst());
+            streetAddressField.setText(c.getAddress());
+            emailField.setText(c.getEmail());
             
             saveButton.addActionListener(new ActionListener()
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Save button has been clicked");
+                    firstName = nameField.getText();
+                    Contact.setFirst(firstName);
+                    BookFrame.updateContactList();
                 }
             });
             
@@ -275,7 +365,7 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    String name = nameField.getText();
+                     //firstName = nameField.getText();
                 }
             });
             
@@ -323,7 +413,7 @@ public class AddressBooks
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String email = emailField.getText();
+                    //String email = emailField.getText();
                 }
             });
             
