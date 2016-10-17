@@ -182,7 +182,7 @@ public class AddressBooks
         public void updateContactList(){						
         	ContactListModel.clear();													
          	for(int i=0;i<Book.entries.size();i++){
-          		ContactListModel.addElement(Book.getContact(i).getFirst());
+          		ContactListModel.addElement(Book.getContact(i).getName());
          	}
         }
     	
@@ -201,7 +201,7 @@ public class AddressBooks
             JButton editPersonButton = new JButton("Edit");
             
             for(int i=0;i<Book.entries.size();i++){
-            	ContactListModel.addElement(Book.getContact(i).getFirst());
+            	ContactListModel.addElement(Book.getContact(i).getName());
             }
             
             addPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
@@ -209,7 +209,7 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
              		System.out.println("add person button clicked");
-            		Contacts fake_person = new Contacts("John", "Brodnax", "1515", "jbrodnax");
+            		Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "Eugene OR", "97403", "5124669790", "jbrodnax");
             		Book.addContact(fake_person);
             		updateContactList();
                 }
@@ -241,11 +241,15 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                 	int index = jlist.getSelectedIndex();
-                	Contacts c = Book.getContact(index);
-                    createContactPages(c, thisFrame);  //Need it to adjust it to simply opening a new book
-                    System.out.println("view person button clicked");
-                    updateContactList();
-                    
+                	if(index >= 0 && index <= ContactListModel.size()){
+                		Contacts c = Book.getContact(index);
+                		c.setEditable(false);
+                    	createContactPages(c, thisFrame);  //Need it to adjust it to simply opening a new book
+                    	System.out.println("view person button clicked");
+                    	updateContactList();
+                	}else{
+                		System.out.println("Error: Person does not exist");
+                	}
                 }
             });
             
@@ -274,9 +278,15 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                 	int index = jlist.getSelectedIndex();
-                	Contacts c  = Book.getContact(index);
-                    createContactPages(c, thisFrame); //edit to allow person to edit
-                    System.out.println("edit person button clicked");
+                	if(index >= 0 && index <= ContactListModel.size()){
+                		Contacts c  = Book.getContact(index);
+                		c.setEditable(true);
+                		createContactPages(c, thisFrame); //edit to allow person to edit
+                		updateContactList();
+                		System.out.println("edit person button clicked");
+                	}else{
+                		System.out.println("Error: Person does not exist");
+                	}
                 }
             });
             
@@ -294,9 +304,9 @@ public class AddressBooks
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
+            contentPane.add(scrollPane);
             contentPane.add(addPersonButton);
             contentPane.add(deletePersonButton);
-            contentPane.add(scrollPane);
             contentPane.add(viewPersonButton);
             contentPane.add(zipSortButton);
             contentPane.add(nameSortButton);
@@ -317,6 +327,7 @@ public class AddressBooks
     	public Contacts Contact;
     	public OpenBookFrame BookFrame;
     	private AddressBook Book;
+    	private String Name;
     	private String firstName;
     	private String lastName;
     	private String email;
@@ -337,17 +348,48 @@ public class AddressBooks
             final JTextField stateAddressField = new JTextField("State: ");
             final JTextField zipAddressField = new JTextField("Zip code: ");
             final JTextField emailField = new JTextField("Email: ");
-            nameField.setText(c.getFirst());
-            streetAddressField.setText(c.getAddress());
+
+            nameField.setText(c.getName());
+            streetAddressField.setText(c.getStreetAddress());
+            cityAddressField.setText(c.getCityAddress());
+            zipAddressField.setText(c.getZipAddress());
+            phoneField.setText(c.getPhone());
             emailField.setText(c.getEmail());
+            
+            if(Contact.getEditable() == false){
+            	nameField.setEditable(false);
+            	phoneField.setEditable(false);
+            	streetAddressField.setEditable(false);
+            	cityAddressField.setEditable(false);
+            	stateAddressField.setEditable(false);
+            	zipAddressField.setEditable(false);
+            	emailField.setEditable(false);
+            }
             
             saveButton.addActionListener(new ActionListener()
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Save button has been clicked");
-                    firstName = nameField.getText();
+                    Name = nameField.getText();
+                    firstName = "";
+                    lastName = "";
+                    for(int i=0; i < Name.length(); i++){
+                    	if(Character.isWhitespace(Name.charAt(i))){
+                    		i++;
+                    		while(i < Name.length()){
+                    			lastName += Name.charAt(i);
+                    			i++;
+                    		}
+                    		break;
+                    	}else{
+                    		firstName += Name.charAt(i);
+                    	}
+                    }
+          
                     Contact.setFirst(firstName);
+                    Contact.setLast(lastName);
+                    Contact.setName();
                     BookFrame.updateContactList();
                 }
             });

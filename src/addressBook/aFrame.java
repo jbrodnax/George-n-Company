@@ -167,7 +167,7 @@ private JButton addContact  = new JButton("Add");
 	      First = txtFirst.getText();
 	      Last = txtLast.getText();
 	      Email = txtEmail.getText();
-	      aBook.addContact(new Contacts(First, Last, Addr, Email));
+	      //aBook.addContact(new Contacts(First, Last, Addr, Email));
 
 	    }catch(Exception e){
 	      System.out.println(e);
@@ -205,7 +205,7 @@ private JButton addContact  = new JButton("Add");
 		      i = aBook.haveContact(First);
 		      if(i!=-1){
 		    	  c = aBook.getContact(i);
-		    	  c.setAddress(Addr);
+		    	  //c.setAddress(Addr);
 		    	  c.setFirst(First);
 		    	  c.setLast(Last);
 		    	  c.setEmail(Email);
