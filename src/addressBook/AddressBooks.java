@@ -204,7 +204,7 @@ public class AddressBooks
             JButton viewPersonButton = new JButton("Open");
             JButton zipSortButton = new JButton("Zip sort");
             JButton nameSortButton = new JButton("Name sort");
-            JButton editPersonButton = new JButton("Edit");
+            //JButton editPersonButton = new JButton("Edit");
             
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
@@ -278,24 +278,24 @@ public class AddressBooks
                     /////////////////////////////////////////////////that sorts by name
                 }
             });
-            
-            editPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
-                                               {
-                public void actionPerformed(ActionEvent args)
-                {
-                    int index = jlist.getSelectedIndex();
-                    if(index >= 0 && index <= ContactListModel.size()){
-                        Contacts c  = Book.getContact(index);
-                        c.setEditable(true);
-                        createContactPages(c, thisFrame); //edit to allow person to edit
-                        updateContactList();
-                        System.out.println("edit person button clicked");
-                    }else{
-                        System.out.println("Error: Person does not exist");
-                    }
-                }
-            });
-            
+            /*
+             editPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+             {
+             public void actionPerformed(ActionEvent args)
+             {
+             int index = jlist.getSelectedIndex();
+             if(index >= 0 && index <= ContactListModel.size()){
+             Contacts c  = Book.getContact(index);
+             c.setEditable(true);
+             createContactPages(c, thisFrame); //edit to allow person to edit
+             updateContactList();
+             System.out.println("edit person button clicked");
+             }else{
+             System.out.println("Error: Person does not exist");
+             }
+             }
+             });
+             */
             jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
            	jlist.addListSelectionListener(new ListSelectionListener(){
                 
@@ -356,31 +356,47 @@ public class AddressBooks
             JButton saveButton = new JButton("Save");
             JButton cancelButton = new JButton("Cancel");
             
+            //Labels for the text fields:
+            JLabel firstNameLabel = new JLabel("First Name: ");
+            JLabel lastNameLabel = new JLabel("Last Name: ");
+            JLabel phoneLabel = new JLabel("Phone Number: ");
+            JLabel streetAddressLabel = new JLabel("Address Line 1: ");
+            JLabel aptNumLabel = new JLabel("Address Line 2: ");
+            JLabel cityAddressLabel = new JLabel("City: ");
+            JLabel stateAddressLabel = new JLabel("State: ");
+            JLabel zipAddressLabel = new JLabel("ZIP Code: ");
+            JLabel emailLabel = new JLabel("Email: ");
+            
+            
             final JTextField firstNameField = new JTextField("First Name: ");
             final JTextField lastNameField = new JTextField("Last Name: ");
             final JTextField phoneField = new JTextField("Phone Number: ");
-            final JTextField streetAddressField = new JTextField("Street Address: ");
-            final JTextField aptNumField = new JTextField("Apt Number: ");
+            final JTextField streetAddressField = new JTextField("Address Line 1: ");
+            final JTextField aptNumField = new JTextField("Address Line 2: ");
             final JTextField cityAddressField = new JTextField("City: ");
             final JTextField stateAddressField = new JTextField("State: ");
-            final JTextField zipAddressField = new JTextField("Zip code: ");
+            final JTextField zipAddressField = new JTextField("ZIP Code: ");
             final JTextField emailField = new JTextField("Email: ");
             
             firstNameField.setText(c.getName());
+            lastNameField.setText(c.getName());
             streetAddressField.setText(c.getStreetAddress());
+            aptNumField.setText(c.getStreetAddress());
             cityAddressField.setText(c.getCityAddress());
             zipAddressField.setText(c.getZipAddress());
             phoneField.setText(c.getPhone());
             emailField.setText(c.getEmail());
             
-            if(Contact.getEditable() == false){
-                firstNameField.setEditable(false);
-                phoneField.setEditable(false);
-                streetAddressField.setEditable(false);
-                cityAddressField.setEditable(false);
-                stateAddressField.setEditable(false);
-                zipAddressField.setEditable(false);
-                emailField.setEditable(false);
+            if(Contact.getEditable() == true){
+                firstNameField.setEditable(true);
+                lastNameField.setEditable(true);
+                phoneField.setEditable(true);
+                streetAddressField.setEditable(true);
+                aptNumField.setEditable(true);
+                cityAddressField.setEditable(true);
+                stateAddressField.setEditable(true);
+                zipAddressField.setEditable(true);
+                emailField.setEditable(true);
             }
             
             saveButton.addActionListener(new ActionListener()
@@ -476,18 +492,69 @@ public class AddressBooks
                 }
             });
             
+            //Labels to show
+            firstNameLabel.setOpaque(true);
+            lastNameLabel.setOpaque(true);
+            phoneLabel.setOpaque(true);
+            streetAddressLabel.setOpaque(true);
+            aptNumLabel.setOpaque(true);
+            cityAddressLabel.setOpaque(true);
+            stateAddressLabel.setOpaque(true);
+            zipAddressLabel.setOpaque(true);
+            emailLabel.setOpaque(true);
+            
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
-            contentPane.add(firstNameField);
-            contentPane.add(lastNameField);
-            contentPane.add(phoneField);
-            contentPane.add(streetAddressField);
-            contentPane.add(aptNumField);
-            contentPane.add(cityAddressField);
-            contentPane.add(stateAddressField);
-            contentPane.add(zipAddressField);
-            contentPane.add(emailField);
+            
+            JPanel labelPanel1 = new JPanel(new GridLayout(1, 2));
+            labelPanel1.add(firstNameLabel);
+            labelPanel1.add(firstNameField);
+            
+            JPanel labelPanel2 = new JPanel(new GridLayout(1, 2));
+            labelPanel2.add(lastNameLabel);
+            labelPanel2.add(lastNameField);
+            
+            JPanel labelPanel3 = new JPanel(new GridLayout(1, 2));
+            labelPanel3.add(phoneLabel);
+            labelPanel3.add(phoneField);
+            
+            JPanel labelPanel4 = new JPanel(new GridLayout(1, 2));
+            labelPanel4.add(streetAddressLabel);
+            labelPanel4.add(streetAddressField);
+            
+            JPanel labelPanel5 = new JPanel(new GridLayout(1, 2));
+            labelPanel5.add(aptNumLabel);
+            labelPanel5.add(aptNumField);
+            
+            JPanel labelPanel6 = new JPanel(new GridLayout(1, 2));
+            labelPanel6.add(cityAddressLabel);
+            labelPanel6.add(cityAddressField);
+            
+            JPanel labelPanel7 = new JPanel(new GridLayout(1, 2));
+            labelPanel7.add(stateAddressLabel);
+            labelPanel7.add(stateAddressField);
+            
+            JPanel labelPanel8 = new JPanel(new GridLayout(1, 2));
+            labelPanel8.add(zipAddressLabel);
+            labelPanel8.add(zipAddressField);
+            
+            JPanel labelPanel9 = new JPanel(new GridLayout(1, 2));
+            labelPanel9.add(emailLabel);
+            labelPanel9.add(emailField);
+            
+            JPanel entryFieldPanel = new JPanel(new GridLayout(9, 1));
+            entryFieldPanel.add(labelPanel1);
+            entryFieldPanel.add(labelPanel2);
+            entryFieldPanel.add(labelPanel3);
+            entryFieldPanel.add(labelPanel4);
+            entryFieldPanel.add(labelPanel5);
+            entryFieldPanel.add(labelPanel6);
+            entryFieldPanel.add(labelPanel7);
+            entryFieldPanel.add(labelPanel8);
+            entryFieldPanel.add(labelPanel9);
+            
+            contentPane.add(entryFieldPanel);
             
             JPanel panel = new JPanel(new GridLayout(1, 2));
             panel.add(saveButton);
