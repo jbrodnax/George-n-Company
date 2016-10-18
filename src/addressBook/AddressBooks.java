@@ -99,6 +99,7 @@ public class AddressBooks
             {
                 int confirm = JOptionPane.showConfirmDialog(null, "Delete selected address book?", "Confirm Delete",
                                                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                int index = jlist.getSelectedIndex();
                 if (confirm == JOptionPane.NO_OPTION)
                 {
                     System.out.println("No button in delete book clicked");
@@ -106,6 +107,13 @@ public class AddressBooks
                 else if (confirm == JOptionPane.YES_OPTION)
                 {
                     System.out.println("Yes button in delete book clicked");
+                    if(index < 0 || index > myAddressBooks.size()){
+                    	System.out.println("Error: index is out of range");
+                    	return;
+                    }else{
+                    	myAddressBooks.remove(index);
+                    	updateBookLibrary();
+                    }
                 }
                 else if (confirm == JOptionPane.CLOSED_OPTION)
                 {
@@ -234,6 +242,11 @@ public class AddressBooks
                     else if (confirm == JOptionPane.YES_OPTION)
                     {
                         System.out.println("Yes button in delete person clicked");
+                        int index = jlist.getSelectedIndex();
+                        if(index >= 0 && index <= ContactListModel.size()){
+                        	Book.deleteContactAt(index);
+                        	updateContactList();
+                        }
                     }
                     else if (confirm == JOptionPane.CLOSED_OPTION)
                     {
@@ -378,8 +391,8 @@ public class AddressBooks
             final JTextField zipAddressField = new JTextField("ZIP Code: ");
             final JTextField emailField = new JTextField("Email: ");
             
-            firstNameField.setText(c.getName());
-            lastNameField.setText(c.getName());
+            firstNameField.setText(c.getFirst());
+            lastNameField.setText(c.getLast());
             streetAddressField.setText(c.getStreetAddress());
             aptNumField.setText(c.getStreetAddress());
             cityAddressField.setText(c.getCityAddress());

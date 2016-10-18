@@ -64,6 +64,10 @@ public class AddressBook implements Serializable {
 		return -1;
 	}
 	
+	public void deleteContactAt(int i){
+		entries.remove(i);
+	}
+	
 	public Contacts getContact(int index){
 		Contacts c;
 		c = entries.get(index);
