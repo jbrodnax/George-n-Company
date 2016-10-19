@@ -24,7 +24,7 @@ public class AddressBooks
         positionWindow(openBook);
         openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
         openBook.setVisible(true);							//makes frame visible
-        //openBook.pack();
+        openBook.pack();
     }
     
     public void updateBookLibrary(){						//called when a new book is created. it updates the listOfBooks
@@ -40,7 +40,7 @@ public class AddressBooks
         positionWindow(contactPage);
         contactPage.setSize(400, 500);
         contactPage.setVisible(true);
-        //contactPage.pack();
+        contactPage.pack();
     }
     
     public void positionWindow(JFrame frame)				//sets location for multiple windows
@@ -183,7 +183,7 @@ public class AddressBooks
         bookListFrame.setSize(new Dimension(400, 500));					//sets size of frame holding list of books
         bookListFrame.setLocationRelativeTo(null); 						//center it
         bookListFrame.setVisible(true);									//make it visible
-        //bookListFrame.pack();
+        bookListFrame.pack();
     }
     
     public static void main(String[] args)	//run the program
@@ -386,7 +386,7 @@ public class AddressBooks
             JLabel zipAddressLabel = new JLabel("ZIP Code: ");
             JLabel emailLabel = new JLabel("Email: ");
             
-            
+            //Text Fields: 
             final JTextField firstNameField = new JTextField("First Name: ");
             final JTextField lastNameField = new JTextField("Last Name: ");
             final JTextField phoneField = new JTextField("Phone Number: ");
