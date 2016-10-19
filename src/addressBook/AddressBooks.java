@@ -17,16 +17,7 @@ public class AddressBooks
     ArrayList<AddressBook> myAddressBooks = new ArrayList<AddressBook>();
     DefaultListModel<String> bookListModel = new DefaultListModel<String>();
     JList<String> jlist = new JList<String>(bookListModel);
-    
-    public void createOpenBookWindow(AddressBook book)
-    {
-        JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
-        positionWindow(openBook);
-        openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
-        openBook.setVisible(true);							//makes frame visible
-        openBook.pack();
-    }
-    
+
     public void updateBookLibrary(){						//called when a new book is created. it updates the listOfBooks
         bookListModel.clear();													//to display the newly created book
         for(int i=0;i<myAddressBooks.size();i++){
@@ -135,7 +126,14 @@ public class AddressBooks
                 int index = jlist.getSelectedIndex();
                 AddressBook book = myAddressBooks.get(index);
                	System.out.println("Opening Book: "+book.getBookName()+"\n");
-               	createOpenBookWindow(book);							//creates single addre
+               	
+               	//Open individual book
+               	JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
+                positionWindow(openBook);
+                openBook.setTitle(book.getBookName());
+                openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
+                openBook.setVisible(true);							//makes frame visible
+                openBook.pack();
             }
         });
         
@@ -208,7 +206,7 @@ public class AddressBooks
         
         public OpenBookFrame(AddressBook book)
         {
-            super("Opened book");
+            super("Opened Book");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
             
             this.Book = book;
