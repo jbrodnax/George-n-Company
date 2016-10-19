@@ -332,18 +332,20 @@ public class AddressBooks
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
             JPanel sortButtons = new JPanel(new GridLayout(1,3));
             
+            //First line of buttons -- Add, Delete, View:
             addDeleteButtons.add(addPersonButton);
             addDeleteButtons.add(deletePersonButton);
             addDeleteButtons.add(viewPersonButton);
             
+            //Sorting buttons
             sortButtons.add(zipSortButton);
             sortButtons.add(nameSortButton);
             
+            //Adding all buttons
             buttonPanel.add(addDeleteButtons);
             buttonPanel.add(sortButtons);
             
             contentPane.add(buttonPanel);
-            //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
         
         public void actionPerformed(ActionEvent e)
@@ -451,6 +453,9 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel button has been clicked");
+                    /* Error: Closing without saving? 
+                     * JOptionPane.showMessageDialog(null, "Changes have not been saved, would you like to continue?", "Error", JOptionPane.ERROR_MESSAGE);
+                     */
                 }
             });
             
@@ -526,6 +531,7 @@ public class AddressBooks
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             
+            //Entry fields with appropriate labels
             JPanel labelPanel1 = new JPanel(new GridLayout(1, 2));
             labelPanel1.add(firstNameLabel);
             labelPanel1.add(firstNameField);
@@ -562,6 +568,7 @@ public class AddressBooks
             labelPanel9.add(emailLabel);
             labelPanel9.add(emailField);
             
+            //Entry field panel -- holds all the text fields
             JPanel entryFieldPanel = new JPanel(new GridLayout(9, 1));
             entryFieldPanel.add(labelPanel1);
             entryFieldPanel.add(labelPanel2);
@@ -575,10 +582,11 @@ public class AddressBooks
             
             contentPane.add(entryFieldPanel);
             
-            JPanel panel = new JPanel(new GridLayout(1, 2));
-            panel.add(saveButton);
-            panel.add(cancelButton);
-            contentPane.add(panel);
+            //Save and Cancel buttons
+            JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+            buttonPanel.add(saveButton);
+            buttonPanel.add(cancelButton);
+            contentPane.add(buttonPanel);
             //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
         @Override
