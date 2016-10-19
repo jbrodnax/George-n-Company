@@ -68,6 +68,7 @@ public class AddressBooks
                 
             }});
         JScrollPane scrollPane = new JScrollPane(jlist);
+        scrollPane.setPreferredSize(new Dimension(300, 350));
         bookLibrary.add(scrollPane);
         
     	  	return bookLibrary;
@@ -90,6 +91,11 @@ public class AddressBooks
                 System.out.println(bookName);
                 myAddressBooks.add(new AddressBook(bookName));
                	updateBookLibrary();
+                /* Check if book has the same name as another book:
+                * JOptionPane.showMessageDialog(null, "This has the same name as another book!  Please enter another name.", "Error", JOptionPane.ERROR_MESSAGE);
+               	* Check for blank book name:
+               	* JOptionPane.showMessageDialog(null, "Please enter in a book name!", "Error", JOptionPane.ERROR_MESSAGE);
+               	*/
             }
         });
         
@@ -166,7 +172,7 @@ public class AddressBooks
         return bookList;
     }
     
-    private static void runGUI() 	//create the initial gui window
+    private static void runGUI() 	//create the initial GUI window
     {
         JFrame bookListFrame = new JFrame("All Address Books");			//make window with address books listed
         bookListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//exit program when you close this window
@@ -205,7 +211,6 @@ public class AddressBooks
             super("Opened book");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
             
-            //Implement Jlist here to allow people to select the user for options
             this.Book = book;
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
@@ -319,6 +324,7 @@ public class AddressBooks
                 }});
            	
             JScrollPane scrollPane = new JScrollPane(jlist);
+            scrollPane.setPreferredSize(new Dimension(300, 350));
             
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -438,6 +444,8 @@ public class AddressBooks
                     Contact.setName();
                     BookFrame.updateContactList();
                 }
+                //Check for ZIP code format before saving
+                //JOptionPane.showMessageDialog(null, "You've entered an unfamiliar ZIP Code, would you still like to save?", "Error", JOPtionPane.ERROR_MESSAGE); 
             });
             
             cancelButton.addActionListener(new ActionListener()
