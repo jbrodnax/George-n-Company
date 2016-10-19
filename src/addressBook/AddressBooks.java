@@ -228,7 +228,7 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                     System.out.println("add person button clicked");
-                    Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "Eugene OR", "97403", "5124669790", "jbrodnax");
+                    Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "" ,"Eugene", "OR", "97403", "5124669790", "jbrodnax");
                     Book.addContact(fake_person);
                     updateContactList();
                 }
@@ -365,6 +365,12 @@ public class AddressBooks
         private String firstName;
         private String lastName;
         private String email;
+        private String phone;
+        private String city;
+        private String state;
+        private String zip;
+        private String aptNum;
+        private String street;
         
         public ContactPages(Contacts c, OpenBookFrame bookFrame) {
             super("Contact Information");
@@ -423,26 +429,44 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Save button has been clicked");
-                    Name = firstNameField.getText();
-                    firstName = "";
-                    lastName = "";
-                    for(int i=0; i < Name.length(); i++){
-                        if(Character.isWhitespace(Name.charAt(i))){
-                            i++;
-                            while(i < Name.length()){
-                                lastName += Name.charAt(i);
-                                i++;
-                            }
-                            break;
-                        }else{
-                            firstName += Name.charAt(i);
-                        }
-                    }
+                    firstName = firstNameField.getText();
+                    lastName = lastNameField.getText();
+                    phone = phoneField.getText();
+                    street = streetAddressField.getText();
+                    aptNum = aptNumField.getText();
+                    city = cityAddressField.getText();
+                    state = stateAddressField.getText();
+                    zip = zipAddressField.getText();
+                    email = emailField.getText();
+                    Name = firstName + " " + lastName;
                     
-                    Contact.setFirst(firstName);
-                    Contact.setLast(lastName);
-                    Contact.setName();
+                    if(firstName != Contact.getFirst()){
+                    	Contact.setFirst(firstName);
+                    }
+                    if(lastName != Contact.getLast()){
+                    	Contact.setLast(lastName);
+                    }
+                    if(Name != Contact.getName()){
+                    	Contact.setName();
+                    }
+                    if(phone != Contact.getPhone()){
+                    	Contact.setPhone(phone);
+                    }
+                    if(street != Contact.getStreetAddress()){
+                    	Contact.setStreetAddress(street);
+                    }
+                    if(city != Contact.getCityAddress()){
+                    	Contact.setCityAddress(city);
+                    }
+                    if(zip != Contact.getZipAddress()){
+                    	Contact.setZipAddress(zip);
+                    }
+                    if(email != Contact.getEmail()){
+                    	Contact.setEmail(email);
+                    }
+                    //add aptNum
                     BookFrame.updateContactList();
+                    dispose();
                 }
                 //Check for ZIP code format before saving
                 //JOptionPane.showMessageDialog(null, "You've entered an unfamiliar ZIP Code, would you still like to save?", "Error", JOPtionPane.ERROR_MESSAGE); 
@@ -453,6 +477,7 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel button has been clicked");
+                    dispose();
                 }
             });
             
