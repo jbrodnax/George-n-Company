@@ -366,6 +366,12 @@ public class AddressBooks
         private String lastName;
         private String email;
         
+        //All 50 states and some US territories -- in Alphabetical order
+        private String[] states = {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
+				"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
+				"NY", "NC", "ND", "OH"," OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
+				"WI", "WY", "GU", "PR", "VI"};
+        
         public ContactPages(Contacts c, OpenBookFrame bookFrame) {
             super("Contact Information");
             this.Contact = c;
@@ -393,9 +399,15 @@ public class AddressBooks
             final JTextField streetAddressField = new JTextField("Address Line 1: ");
             final JTextField aptNumField = new JTextField("Address Line 2: ");
             final JTextField cityAddressField = new JTextField("City: ");
-            final JTextField stateAddressField = new JTextField("State: ");
+            //final JTextField stateAddressField = new JTextField("State: ");
             final JTextField zipAddressField = new JTextField("ZIP Code: ");
             final JTextField emailField = new JTextField("Email: ");
+            
+            //State drop-down menu
+            JComboBox stateMenu = new JComboBox();
+            for(int i = 0; i < 53; i++) {
+            	stateMenu.addItem(states[i]);
+            	}
             
             firstNameField.setText(c.getFirst());
             lastNameField.setText(c.getLast());
@@ -413,7 +425,7 @@ public class AddressBooks
                 streetAddressField.setEditable(true);
                 aptNumField.setEditable(true);
                 cityAddressField.setEditable(true);
-                stateAddressField.setEditable(true);
+                //stateAddressField.setEditable(true);
                 zipAddressField.setEditable(true);
                 emailField.setEditable(true);
             }
@@ -492,12 +504,22 @@ public class AddressBooks
                 }
             });
             
-            stateAddressField.addActionListener(new ActionListener()
+            /*stateAddressField.addActionListener(new ActionListener()
                                                 {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String stateAddress = stateAddressField.getText();
                 }
+            });
+            */
+            
+            stateMenu.addActionListener(new ActionListener() 
+            {
+            	@Override
+            	public void actionPerformed(ActionEvent e)
+            	{
+            		System.out.println("State has been selected");
+            	}
             });
             
             zipAddressField.addActionListener(new ActionListener()
@@ -558,7 +580,8 @@ public class AddressBooks
             
             JPanel labelPanel7 = new JPanel(new GridLayout(1, 2));
             labelPanel7.add(stateAddressLabel);
-            labelPanel7.add(stateAddressField);
+            //labelPanel7.add(stateAddressField);
+            labelPanel7.add(stateMenu);
             
             JPanel labelPanel8 = new JPanel(new GridLayout(1, 2));
             labelPanel8.add(zipAddressLabel);
