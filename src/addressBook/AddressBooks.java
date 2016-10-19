@@ -17,16 +17,7 @@ public class AddressBooks
     ArrayList<AddressBook> myAddressBooks = new ArrayList<AddressBook>();
     DefaultListModel<String> bookListModel = new DefaultListModel<String>();
     JList<String> jlist = new JList<String>(bookListModel);
-    
-    public void createOpenBookWindow(AddressBook book)
-    {
-        JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
-        positionWindow(openBook);
-        openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
-        openBook.setVisible(true);							//makes frame visible
-        openBook.pack();
-    }
-    
+
     public void updateBookLibrary(){						//called when a new book is created. it updates the listOfBooks
         bookListModel.clear();													//to display the newly created book
         for(int i=0;i<myAddressBooks.size();i++){
@@ -135,7 +126,14 @@ public class AddressBooks
                 int index = jlist.getSelectedIndex();
                 AddressBook book = myAddressBooks.get(index);
                	System.out.println("Opening Book: "+book.getBookName()+"\n");
-               	createOpenBookWindow(book);							//creates single addre
+               	
+               	//Open individual book
+               	JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
+                positionWindow(openBook);
+                openBook.setTitle(book.getBookName() + " Address Book");
+                openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
+                openBook.setVisible(true);							//makes frame visible
+                openBook.pack();
             }
         });
         
@@ -208,7 +206,7 @@ public class AddressBooks
         
         public OpenBookFrame(AddressBook book)
         {
-            super("Opened book");
+            super("Opened Book");
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
             
             this.Book = book;
@@ -334,18 +332,20 @@ public class AddressBooks
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
             JPanel sortButtons = new JPanel(new GridLayout(1,3));
             
+            //First line of buttons -- Add, Delete, View:
             addDeleteButtons.add(addPersonButton);
             addDeleteButtons.add(deletePersonButton);
             addDeleteButtons.add(viewPersonButton);
             
+            //Sorting buttons
             sortButtons.add(zipSortButton);
             sortButtons.add(nameSortButton);
             
+            //Adding all buttons
             buttonPanel.add(addDeleteButtons);
             buttonPanel.add(sortButtons);
             
             contentPane.add(buttonPanel);
-            //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
         
         public void actionPerformed(ActionEvent e)
@@ -371,6 +371,12 @@ public class AddressBooks
         private String zip;
         private String aptNum;
         private String street;
+        
+        //All 50 states and some US territories -- in Alphabetical order
+        private String[] states = {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
+				"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
+				"NY", "NC", "ND", "OH"," OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
+				"WI", "WY", "GU", "PR", "VI"};
         
         public ContactPages(Contacts c, OpenBookFrame bookFrame) {
             super("Contact Information");
@@ -399,9 +405,15 @@ public class AddressBooks
             final JTextField streetAddressField = new JTextField("Address Line 1: ");
             final JTextField aptNumField = new JTextField("Address Line 2: ");
             final JTextField cityAddressField = new JTextField("City: ");
-            final JTextField stateAddressField = new JTextField("State: ");
+            //final JTextField stateAddressField = new JTextField("State: ");
             final JTextField zipAddressField = new JTextField("ZIP Code: ");
             final JTextField emailField = new JTextField("Email: ");
+            
+            //State drop-down menu
+            JComboBox stateMenu = new JComboBox();
+            for(int i = 0; i < 53; i++) {
+            	stateMenu.addItem(states[i]);
+            	}
             
             firstNameField.setText(c.getFirst());
             lastNameField.setText(c.getLast());
@@ -419,7 +431,7 @@ public class AddressBooks
                 streetAddressField.setEditable(true);
                 aptNumField.setEditable(true);
                 cityAddressField.setEditable(true);
-                stateAddressField.setEditable(true);
+                //stateAddressField.setEditable(true);
                 zipAddressField.setEditable(true);
                 emailField.setEditable(true);
             }
@@ -477,7 +489,12 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel button has been clicked");
-                    dispose();
+<<<<<<< HEAD
+=======
+                    /* Error: Closing without saving? 
+                     * JOptionPane.showMessageDialog(null, "Changes have not been saved, would you like to continue?", "Error", JOptionPane.ERROR_MESSAGE);
+                     */
+>>>>>>> a79f32c90f3877e4d08b0b58921e1edff21c47a7
                 }
             });
             
@@ -514,12 +531,22 @@ public class AddressBooks
                 }
             });
             
-            stateAddressField.addActionListener(new ActionListener()
+            /*stateAddressField.addActionListener(new ActionListener()
                                                 {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String stateAddress = stateAddressField.getText();
                 }
+            });
+            */
+            
+            stateMenu.addActionListener(new ActionListener() 
+            {
+            	@Override
+            	public void actionPerformed(ActionEvent e)
+            	{
+            		System.out.println("State has been selected");
+            	}
             });
             
             zipAddressField.addActionListener(new ActionListener()
@@ -553,6 +580,7 @@ public class AddressBooks
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             
+            //Entry fields with appropriate labels
             JPanel labelPanel1 = new JPanel(new GridLayout(1, 2));
             labelPanel1.add(firstNameLabel);
             labelPanel1.add(firstNameField);
@@ -579,7 +607,8 @@ public class AddressBooks
             
             JPanel labelPanel7 = new JPanel(new GridLayout(1, 2));
             labelPanel7.add(stateAddressLabel);
-            labelPanel7.add(stateAddressField);
+            //labelPanel7.add(stateAddressField);
+            labelPanel7.add(stateMenu);
             
             JPanel labelPanel8 = new JPanel(new GridLayout(1, 2));
             labelPanel8.add(zipAddressLabel);
@@ -589,6 +618,7 @@ public class AddressBooks
             labelPanel9.add(emailLabel);
             labelPanel9.add(emailField);
             
+            //Entry field panel -- holds all the text fields
             JPanel entryFieldPanel = new JPanel(new GridLayout(9, 1));
             entryFieldPanel.add(labelPanel1);
             entryFieldPanel.add(labelPanel2);
@@ -602,10 +632,11 @@ public class AddressBooks
             
             contentPane.add(entryFieldPanel);
             
-            JPanel panel = new JPanel(new GridLayout(1, 2));
-            panel.add(saveButton);
-            panel.add(cancelButton);
-            contentPane.add(panel);
+            //Save and Cancel buttons
+            JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+            buttonPanel.add(saveButton);
+            buttonPanel.add(cancelButton);
+            contentPane.add(buttonPanel);
             //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
         @Override
