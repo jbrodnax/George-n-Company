@@ -130,7 +130,7 @@ public class AddressBooks
                	//Open individual book
                	JFrame openBook = new OpenBookFrame(book);				//new frame object for viewing addBook
                 positionWindow(openBook);
-                openBook.setTitle(book.getBookName());
+                openBook.setTitle(book.getBookName() + " Address Book");
                 openBook.setSize(new Dimension(400, 500));			//sets size of frame where you add a book
                 openBook.setVisible(true);							//makes frame visible
                 openBook.pack();
