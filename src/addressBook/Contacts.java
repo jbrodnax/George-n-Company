@@ -14,7 +14,9 @@ public class Contacts implements Serializable {
 	private String first;
 	private String last;
 	private String streetAddress;
+	private String streetAddress2;
 	private String cityAddress;
+	private String stateAddress;
 	private String zipAddress;
 	private String phone;
 	private String postalAddress;
@@ -24,22 +26,30 @@ public class Contacts implements Serializable {
 	ArrayList<EntryField> Info = new ArrayList<EntryField>();
 	
 	//constructor
-	Contacts(String first, String last, String street, String city, String zip, String phoneNum, String email){
+	Contacts(String first, String last, 
+			String phoneNum, String street, 
+			String street2, String city, 
+			String state, String zip, String email){
 
 		this.first = first;
 		this.last = last;
 		this.streetAddress = street;
+		this.streetAddress2 = street2;
 		this.cityAddress = city;
+		this.stateAddress = state;
 		this.zipAddress = zip;
 		this.email = email;
 		this.phone = phoneNum;
+		
 		this.Name = first + " " + last;
 		this.postalAddress = this.streetAddress + "\n" + this.cityAddress + "\n" + this.zipAddress;
 		
 		addEntryField("First", this.first);
 		addEntryField("Last", this.last);
 		addEntryField("Street", this.streetAddress);
+		addEntryField("Street2", this.streetAddress2);
 		addEntryField("City", this.cityAddress);
+		addEntryField("State", this.stateAddress);
 		addEntryField("Zip", this.zipAddress);
 		addEntryField("Phone", this.phone);
 		addEntryField("Email", this.email);
@@ -104,8 +114,16 @@ public class Contacts implements Serializable {
 		return this.streetAddress;
 	}
 	
+	public String getStreetAddress2(){
+		return this.streetAddress2;
+	}
+	
 	public String getCityAddress(){
 		return this.cityAddress;
+	}
+	
+	public String getState(){
+		return this.stateAddress;
 	}
 	
 	public String getZipAddress(){
@@ -154,9 +172,19 @@ public class Contacts implements Serializable {
 		setEntry("Street", address);
 	}
 	
+	public void setStreetAddress2(String address){
+		this.streetAddress2 = address;
+		setEntry("Street2", address);
+	}
+	
 	public void setCityAddress(String address){
 		this.cityAddress = address;
 		setEntry("City", address);
+	}
+	
+	public void setState(String state){
+		this.stateAddress = state;
+		setEntry("State", state);
 	}
 	
 	public void setZipAddress(String address){
