@@ -287,6 +287,15 @@ public class AddressBooks
                 }
             });
             
+            
+            KeyListener myKeyListener = new KeyListener() {
+                public void keyTyped(KeyEvent e) { System.out.println("keyTyped handled"); }
+                public void keyPressed(KeyEvent e) {  }
+                public void keyReleased(KeyEvent e) {  }
+            };
+            searchField.addKeyListener(myKeyListener);
+            
+            /*
             searchField.addActionListener(new ActionListener()
             {
             	public void actionPerformed(ActionEvent args)
@@ -295,6 +304,7 @@ public class AddressBooks
             		//Dynamic search field
             	}
             });
+            */
             
             /*
             searchButton.addActionListener(new ActionListener() 
