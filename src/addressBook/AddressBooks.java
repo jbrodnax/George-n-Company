@@ -29,7 +29,7 @@ public class AddressBooks
     {
         JFrame contactPage = new ContactPages(c, b);
         positionWindow(contactPage);
-        contactPage.setSize(400, 500);
+        contactPage.setPreferredSize(new Dimension(275, 300));
         contactPage.setVisible(true);
         contactPage.pack();
     }
@@ -366,7 +366,7 @@ public class AddressBooks
         private String lastName;
         private String email;
         
-        //All 50 states and some US territories -- in Alphabetical order
+        //All 50 states and some US territories -- in Alphabetical order of states then territories 
         private String[] states = {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
 				"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
 				"NY", "NC", "ND", "OH"," OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
@@ -377,6 +377,7 @@ public class AddressBooks
             this.Contact = c;
             this.BookFrame = bookFrame;
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            
             
             JButton saveButton = new JButton("Save");
             JButton cancelButton = new JButton("Cancel");
@@ -538,7 +539,7 @@ public class AddressBooks
                 }
             });
             
-            //Labels to show
+            //Labels to show --> need to center labels?
             firstNameLabel.setOpaque(true);
             lastNameLabel.setOpaque(true);
             phoneLabel.setOpaque(true);
