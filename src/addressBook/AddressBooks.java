@@ -213,7 +213,7 @@ public class AddressBooks
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
             JButton viewPersonButton = new JButton("Open");
-            JButton zipSortButton = new JButton("Zip sort");
+            JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
             
             for(int i=0;i<Book.entries.size();i++){
