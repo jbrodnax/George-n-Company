@@ -213,8 +213,11 @@ public class AddressBooks
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
             JButton viewPersonButton = new JButton("Open");
+            //JButton searchButton = new JButton("Search");			//Search button
             JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
+            
+            JTextField searchField = new JTextField("Search");
             
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
@@ -277,6 +280,25 @@ public class AddressBooks
                 }
             });
             
+            searchField.addActionListener(new ActionListener()
+            {
+            	public void actionPerformed(ActionEvent args)
+            	{
+            		System.out.println("Search has been used");
+            		//Dynamic search field
+            	}
+            });
+            
+            /*
+            searchButton.addActionListener(new ActionListener() 
+            {
+            	public void actionPerformed(ActionEvent args) 
+            	{
+            		System.out.println("Search button has been clicked");
+            	}
+            });
+            */
+            
             zipSortButton.addActionListener(new ActionListener() 	//action listener for export book button
                                             {
                 public void actionPerformed(ActionEvent args)
@@ -313,9 +335,14 @@ public class AddressBooks
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             contentPane.add(scrollPane);
-            JPanel buttonPanel = new JPanel(new GridLayout(2, 1));
+            JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
+            JPanel searchPanel = new JPanel(new GridLayout(1, 2));
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
             JPanel sortButtons = new JPanel(new GridLayout(1,3));
+            
+            //Search Field: 
+            searchPanel.add(searchField);
+            //searchPanel.add(searchButton);
             
             //First line of buttons -- Add, Delete, View:
             addDeleteButtons.add(addPersonButton);
@@ -326,7 +353,8 @@ public class AddressBooks
             sortButtons.add(zipSortButton);
             sortButtons.add(nameSortButton);
             
-            //Adding all buttons
+            //Adding all buttons and fields
+            buttonPanel.add(searchPanel);
             buttonPanel.add(addDeleteButtons);
             buttonPanel.add(sortButtons);
             
