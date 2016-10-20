@@ -142,7 +142,7 @@ public class AddressBooks
             public void actionPerformed(ActionEvent args)
             {
                 String fileName;
-                fileName = JOptionPane.showInputDialog("Enter file to import from");	//creates import book dialogue box
+                fileName = JOptionPane.showInputDialog(null, "Enter file to import from", "Import", JOptionPane.INFORMATION_MESSAGE);	//creates import book dialogue box
             }
         });
         
@@ -151,7 +151,7 @@ public class AddressBooks
             public void actionPerformed(ActionEvent args)
             {
                 String bookName;
-                bookName = JOptionPane.showInputDialog("Enter file to export to");	//creates export book dialogue box
+                bookName = JOptionPane.showInputDialog(null, "Enter file to export to", "Export", JOptionPane.INFORMATION_MESSAGE);	//creates export book dialogue box
             }
         });
         
@@ -215,7 +215,6 @@ public class AddressBooks
             JButton viewPersonButton = new JButton("Open");
             JButton zipSortButton = new JButton("Zip sort");
             JButton nameSortButton = new JButton("Name sort");
-            //JButton editPersonButton = new JButton("Edit");
             
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
@@ -297,24 +296,7 @@ public class AddressBooks
                     /////////////////////////////////////////////////that sorts by name
                 }
             });
-            /*
-             editPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
-             {
-             public void actionPerformed(ActionEvent args)
-             {
-             int index = jlist.getSelectedIndex();
-             if(index >= 0 && index <= ContactListModel.size()){
-             Contacts c  = Book.getContact(index);
-             c.setEditable(true);
-             createContactPages(c, thisFrame); //edit to allow person to edit
-             updateContactList();
-             System.out.println("edit person button clicked");
-             }else{
-             System.out.println("Error: Person does not exist");
-             }
-             }
-             });
-             */
+
             jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
            	jlist.addListSelectionListener(new ListSelectionListener(){
                 
@@ -377,9 +359,9 @@ public class AddressBooks
         private String street;
         
         //All 50 states and some US territories -- in Alphabetical order of states then territories 
-        private String[] states = {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
+        private String[] states = {" ", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
 				"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
-				"NY", "NC", "ND", "OH"," OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
+				"NY", "NC", "ND", "OH","OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
 				"WI", "WY", "GU", "PR", "VI"};
         
         public ContactPages(Contacts c, OpenBookFrame bookFrame) {
@@ -399,7 +381,7 @@ public class AddressBooks
             JLabel streetAddressLabel = new JLabel("Address Line 1: ");
             JLabel aptNumLabel = new JLabel("Address Line 2: ");
             JLabel cityAddressLabel = new JLabel("City: ");
-            JLabel stateAddressLabel = new JLabel("State: ");
+            JLabel stateAddressLabel = new JLabel("State or US Territory: ");
             JLabel zipAddressLabel = new JLabel("ZIP Code: ");
             JLabel emailLabel = new JLabel("Email: ");
             
@@ -410,13 +392,12 @@ public class AddressBooks
             final JTextField streetAddressField = new JTextField("Address Line 1: ");
             final JTextField aptNumField = new JTextField("Address Line 2: ");
             final JTextField cityAddressField = new JTextField("City: ");
-            //final JTextField stateAddressField = new JTextField("State: ");
             final JTextField zipAddressField = new JTextField("ZIP Code: ");
             final JTextField emailField = new JTextField("Email: ");
             
             //State drop-down menu
             JComboBox stateMenu = new JComboBox();
-            for(int i = 0; i < 53; i++) {
+            for(int i = 0; i < 54; i++) {
             	stateMenu.addItem(states[i]);
             	}
             
@@ -508,8 +489,7 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel button has been clicked");
 
-                     //Error: Closing without saving? 
-                    
+                     //Error: Closing without saving?
                     int confirm = JOptionPane.showConfirmDialog(null, "Changes will not be saved.", "Continue?",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if(confirm == JOptionPane.YES_OPTION){
@@ -554,16 +534,7 @@ public class AddressBooks
                     String cityAddress = cityAddressField.getText();
                 }
             });
-            
-            /*stateAddressField.addActionListener(new ActionListener()
-                                                {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String stateAddress = stateAddressField.getText();
-                }
-            });
-            */
-            
+
             stateMenu.addActionListener(new ActionListener() 
             {
             	@Override
