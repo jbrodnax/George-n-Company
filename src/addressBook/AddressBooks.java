@@ -226,8 +226,11 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                     System.out.println("add person button clicked");
-                    Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "" ,"Eugene", "OR", "97403", "5124669790", "jbrodnax");
-                    Book.addContact(fake_person);
+                    //Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "" ,"Eugene", "OR", "97403", "5124669790", "jbrodnax");
+                    //Book.addContact(fake_person);
+                    Contacts new_person = new Contacts();
+                    Book.addContact(new_person);
+                    createContactPages(new_person, thisFrame);
                     updateContactList();
                 }
             });
@@ -368,6 +371,7 @@ public class AddressBooks
         private String phone;
         private String city;
         private String state;
+        private int stateIndex;
         private String zip;
         private String aptNum;
         private String street;
@@ -419,6 +423,7 @@ public class AddressBooks
             lastNameField.setText(c.getLast());
             streetAddressField.setText(c.getStreetAddress());
             aptNumField.setText(c.getStreetAddress());
+            stateMenu.setSelectedIndex(c.getStateIndex());
             cityAddressField.setText(c.getCityAddress());
             zipAddressField.setText(c.getZipAddress());
             phoneField.setText(c.getPhone());
@@ -431,7 +436,6 @@ public class AddressBooks
                 streetAddressField.setEditable(true);
                 aptNumField.setEditable(true);
                 cityAddressField.setEditable(true);
-                //stateAddressField.setEditable(true);
                 zipAddressField.setEditable(true);
                 emailField.setEditable(true);
             }
@@ -447,10 +451,20 @@ public class AddressBooks
                     street = streetAddressField.getText();
                     aptNum = aptNumField.getText();
                     city = cityAddressField.getText();
-                    state = stateAddressField.getText();
+                    stateIndex = stateMenu.getSelectedIndex();
+                    state = states[stateIndex];
                     zip = zipAddressField.getText();
                     email = emailField.getText();
                     Name = firstName + " " + lastName;
+                    
+                    if(firstName.isEmpty()){
+                    	JOptionPane.showMessageDialog(null, "Contact info must contain a first name", "Error", JOptionPane.ERROR_MESSAGE);
+                    	return;
+                    }
+                    if(phone.isEmpty()){
+                    	JOptionPane.showMessageDialog(null, "Contact info must contain a phone number", "Error", JOptionPane.ERROR_MESSAGE);
+                    	return;
+                    }
                     
                     if(firstName != Contact.getFirst()){
                     	Contact.setFirst(firstName);
@@ -463,6 +477,9 @@ public class AddressBooks
                     }
                     if(phone != Contact.getPhone()){
                     	Contact.setPhone(phone);
+                    }
+                    if(stateIndex != Contact.getStateIndex()){
+                    	Contact.setStateIndex(stateIndex);
                     }
                     if(street != Contact.getStreetAddress()){
                     	Contact.setStreetAddress(street);
@@ -489,12 +506,17 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel button has been clicked");
-<<<<<<< HEAD
-=======
-                    /* Error: Closing without saving? 
-                     * JOptionPane.showMessageDialog(null, "Changes have not been saved, would you like to continue?", "Error", JOptionPane.ERROR_MESSAGE);
-                     */
->>>>>>> a79f32c90f3877e4d08b0b58921e1edff21c47a7
+
+                     //Error: Closing without saving? 
+                    
+                    int confirm = JOptionPane.showConfirmDialog(null, "Changes will not be saved.", "Continue?",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(confirm == JOptionPane.YES_OPTION){
+                    	dispose();
+                    }else{
+                    	return;
+                    }
+
                 }
             });
             
@@ -503,7 +525,8 @@ public class AddressBooks
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    //firstName = nameField.getText();
+                    String first = firstNameField.getText();
+        
                 }
             });
             

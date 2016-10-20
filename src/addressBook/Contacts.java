@@ -17,6 +17,7 @@ public class Contacts implements Serializable {
 	private String streetAddress2;
 	private String cityAddress;
 	private String stateAddress;
+	private int stateIndex;
 	private String zipAddress;
 	private String phone;
 	private String postalAddress;
@@ -29,20 +30,21 @@ public class Contacts implements Serializable {
 	Contacts(String first, String last, 
 			String phoneNum, String street, 
 			String street2, String city, 
-			String state, String zip, String email){
+			String state, String zip, String email, int stateInt){
 
 		this.first = first;
 		this.last = last;
 		this.streetAddress = street;
 		this.streetAddress2 = street2;
 		this.cityAddress = city;
+		this.stateIndex = stateInt;
 		this.stateAddress = state;
 		this.zipAddress = zip;
 		this.email = email;
 		this.phone = phoneNum;
 		
 		this.Name = first + " " + last;
-		this.postalAddress = this.streetAddress + "\n" + this.cityAddress + "\n" + this.zipAddress;
+		this.postalAddress = this.streetAddress + "\n" + this.cityAddress+ ", "+ this.stateAddress + "\n" + this.zipAddress;
 		
 		addEntryField("First", this.first);
 		addEntryField("Last", this.last);
@@ -57,10 +59,29 @@ public class Contacts implements Serializable {
 
 	//default constructor
 	Contacts(){
-		setFirst("");
-		setLast("");
-		setStreetAddress("");
-		setEmail("");
+		this.first = "";
+		this.last = "";
+		this.streetAddress = "";
+		this.streetAddress2 = "";
+		this.cityAddress = "";
+		this.stateIndex = 0;
+		this.stateAddress = "";
+		this.zipAddress = "";
+		this.email = "";
+		this.phone = "";
+		
+		this.Name = "";
+		this.postalAddress = "";
+		
+		addEntryField("First", this.first);
+		addEntryField("Last", this.last);
+		addEntryField("Street", this.streetAddress);
+		addEntryField("Street2", this.streetAddress2);
+		addEntryField("City", this.cityAddress);
+		addEntryField("State", this.stateAddress);
+		addEntryField("Zip", this.zipAddress);
+		addEntryField("Phone", this.phone);
+		addEntryField("Email", this.email);
 	}
 	
 	public void addEntryField(String type, String info){
@@ -126,6 +147,10 @@ public class Contacts implements Serializable {
 		return this.stateAddress;
 	}
 	
+	public int getStateIndex(){
+		return this.stateIndex;
+	}
+	
 	public String getZipAddress(){
 		return this.zipAddress;
 	}
@@ -150,6 +175,10 @@ public class Contacts implements Serializable {
 		}else{
 			System.out.println("Error: no entry field of type "+type);
 		}
+	}
+	
+	public void updatePostal(){
+		this.postalAddress = this.streetAddress + "\n" + this.cityAddress+ ", "+ this.stateAddress + "\n" + this.zipAddress;
 	}
 	
 	public void setName(){
@@ -185,6 +214,10 @@ public class Contacts implements Serializable {
 	public void setState(String state){
 		this.stateAddress = state;
 		setEntry("State", state);
+	}
+	
+	public void setStateIndex(int index){
+		this.stateIndex = index;
 	}
 	
 	public void setZipAddress(String address){
