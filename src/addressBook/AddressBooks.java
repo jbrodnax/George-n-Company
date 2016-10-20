@@ -14,19 +14,18 @@ import java.util.List;
 public class AddressBooks
 {
     final static String CREATE_WINDOW = "new_win";
-    private Point framePlace = null;						//holds screen placement of frames
-    ////////create the windows you can open when you are looking at your list of books
+    private Point framePlace = null;											//holds screen placement of frames
     ArrayList<AddressBook> myAddressBooks = new ArrayList<AddressBook>();
     DefaultListModel<String> bookListModel = new DefaultListModel<String>();
     JList<String> jlist = new JList<String>(bookListModel);
 
-    public void updateBookLibrary(){						//called when a new book is created. it updates the listOfBooks
+    public void updateBookLibrary(){											//called when a new book is created. it updates the listOfBooks
         bookListModel.clear();													//to display the newly created book
         for(int i=0;i<myAddressBooks.size();i++){
             bookListModel.addElement(myAddressBooks.get(i).getBookName());
         }
     }
-    
+    //creat windows that display fields for each single contact
     public void createContactPages(Contacts c, OpenBookFrame b)
     {
         JFrame contactPage = new ContactPages(c, b);
@@ -49,9 +48,9 @@ public class AddressBooks
             framePlace = newFrame.getLocation();
         }
     }
-    
-    protected JComponent bookListLibraryPane(){					//creates JPanel component for the textArea displaying
-        JPanel bookLibrary = new JPanel();						//all available books
+    //create window that holds the list of address books
+    protected JComponent bookListLibraryPane(){						//creates JPanel component for the textArea displaying
+        JPanel bookLibrary = new JPanel();							//all available books
         jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jlist.addListSelectionListener(new ListSelectionListener(){
             
@@ -75,8 +74,8 @@ public class AddressBooks
         JButton importBookButton = new JButton("Import");
         JButton exportBookButton = new JButton("Export");
         
-        addBookButton.addActionListener(new ActionListener()
-                                        {
+        addBookButton.addActionListener(new ActionListener()	//create action listener for button that adds a book 
+        {
             public void actionPerformed(ActionEvent args)
             {
                 String bookName;
@@ -160,8 +159,8 @@ public class AddressBooks
                 bookName = JOptionPane.showInputDialog(null, "Enter file to export to", "Export", JOptionPane.INFORMATION_MESSAGE);	//creates export book dialogue box
             }
         });
-        
-        JPanel bookList = new JPanel(new GridLayout(2,1));								//put the buttons in a pane
+        //add the buttons to the window displaying the list of address books
+        JPanel bookList = new JPanel(new GridLayout(2,1));								
         JPanel firstLine = new JPanel(new GridLayout(1,3));
         
         firstLine.add(addBookButton);
@@ -195,7 +194,7 @@ public class AddressBooks
         runGUI();
     }
     
-    class OpenBookFrame extends JFrame implements ActionListener //single book
+    class OpenBookFrame extends JFrame implements ActionListener //create the window for a single book to display contacts etc
     {
         
         private AddressBook Book;
@@ -217,6 +216,7 @@ public class AddressBooks
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);		//lets you close single books without exiting program
             
             this.Book = book;
+            //create the buttons for the single book window
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
             JButton viewPersonButton = new JButton("Open/Edit");
@@ -224,13 +224,13 @@ public class AddressBooks
             JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
             
-            JTextField searchField = new JTextField();
+            JTextField searchField = new JTextField();		//create a dynamic search field for finding contacts
             
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
             }
             
-            addPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            addPersonButton.addActionListener(new ActionListener() 	//action listener for button that adds a contact
                                               {
                 public void actionPerformed(ActionEvent args)
                 {
@@ -244,7 +244,7 @@ public class AddressBooks
                 }
             });
             
-            deletePersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            deletePersonButton.addActionListener(new ActionListener() 	//action listener for button deleting a person
                                                  {
                 public void actionPerformed(ActionEvent args)
                 {
@@ -270,7 +270,7 @@ public class AddressBooks
                 }
             });
             
-            viewPersonButton.addActionListener(new ActionListener() 	//action listener for export book button
+            viewPersonButton.addActionListener(new ActionListener() 	//action listener for button allowing viewing and editing person
                                                {
                 public void actionPerformed(ActionEvent args)
                 {
@@ -287,7 +287,7 @@ public class AddressBooks
                 }
             });
             
-            
+            //create key listener for dynamic search of contacts in asingle book
             KeyListener myKeyListener = new KeyListener() 
             {
                 
@@ -322,7 +322,7 @@ public class AddressBooks
             });
             */
             
-            zipSortButton.addActionListener(new ActionListener() 	//action listener for export book button
+            zipSortButton.addActionListener(new ActionListener() 	//action listener for button sorting contacts by zip
                                             {
                 public void actionPerformed(ActionEvent args)
                 {
@@ -332,7 +332,7 @@ public class AddressBooks
                 }
             });
             
-            nameSortButton.addActionListener(new ActionListener() 	//action listener for export book button
+            nameSortButton.addActionListener(new ActionListener() 	//action listener for button sorting contacts by name
                                              {
                 public void actionPerformed(ActionEvent args)
                 {
@@ -350,7 +350,7 @@ public class AddressBooks
                     // TODO Auto-generated method stub
                     
                 }});
-           	
+           	//create pane for displaying contacts in a single book
             JScrollPane scrollPane = new JScrollPane(jlist);
             scrollPane.setPreferredSize(new Dimension(300, 350));
             
@@ -358,6 +358,7 @@ public class AddressBooks
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             contentPane.add(scrollPane);
+            //create panels for buttons in single book
             JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
             JPanel searchPanel = new JPanel(new GridLayout(1, 2));
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
@@ -390,10 +391,10 @@ public class AddressBooks
             dispose();
         }
     }
-    
+   
     class ContactPages extends JFrame implements ActionListener
     {
-        
+        //add elements to single contact
         public Contacts Contact;
         public OpenBookFrame BookFrame;
         private AddressBook Book;
@@ -473,7 +474,7 @@ public class AddressBooks
                 emailField.setEditable(true);
             }
             
-            saveButton.addActionListener(new ActionListener()
+            saveButton.addActionListener(new ActionListener()//create action listener for button saving a person
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -489,7 +490,7 @@ public class AddressBooks
                     zip = zipAddressField.getText();
                     email = emailField.getText();
                     Name = firstName + " " + lastName;
-                    
+                    //check for and validate input for single entries
                     if(firstName.isEmpty()){
                     	JOptionPane.showMessageDialog(null, "Contact info must contain a first name", "Error", JOptionPane.ERROR_MESSAGE);
                     	return;
@@ -534,7 +535,7 @@ public class AddressBooks
                 //JOptionPane.showMessageDialog(null, "You've entered an unfamiliar ZIP Code, would you still like to save?", "Error", JOPtionPane.ERROR_MESSAGE); 
             });
             
-            cancelButton.addActionListener(new ActionListener()
+            cancelButton.addActionListener(new ActionListener()//action listener for button canceling adding a single person
                                            {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -552,7 +553,7 @@ public class AddressBooks
                 }
             });
             
-            firstNameField.addActionListener(new ActionListener()
+            firstNameField.addActionListener(new ActionListener()		//read in the first name given
                                              {
                 @Override
                 public void actionPerformed(ActionEvent e)
@@ -562,7 +563,7 @@ public class AddressBooks
                 }
             });
             
-            phoneField.addActionListener(new ActionListener()
+            phoneField.addActionListener(new ActionListener()			//read in the phone number
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -570,7 +571,7 @@ public class AddressBooks
                 }
             });
             
-            streetAddressField.addActionListener(new ActionListener()
+            streetAddressField.addActionListener(new ActionListener()	//read in the first address line
                                                  {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -578,7 +579,7 @@ public class AddressBooks
                 }
             });
             
-            cityAddressField.addActionListener(new ActionListener()
+            cityAddressField.addActionListener(new ActionListener()		//read in the second address line
                                                {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -586,7 +587,7 @@ public class AddressBooks
                 }
             });
 
-            stateMenu.addActionListener(new ActionListener() 
+            stateMenu.addActionListener(new ActionListener() 			//read in the state selected
             {
             	@Override
             	public void actionPerformed(ActionEvent e)
@@ -595,7 +596,7 @@ public class AddressBooks
             	}
             });
             
-            zipAddressField.addActionListener(new ActionListener()
+            zipAddressField.addActionListener(new ActionListener()		//read in the zip code
                                               {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -603,7 +604,7 @@ public class AddressBooks
                 }
             });
             
-            emailField.addActionListener(new ActionListener()
+            emailField.addActionListener(new ActionListener()			//read in the email
                                          {
                 @Override
                 public void actionPerformed(ActionEvent e) {
