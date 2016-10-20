@@ -224,7 +224,7 @@ public class AddressBooks
             JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
             
-            JTextField searchField = new JTextField("Search");
+            JTextField searchField = new JTextField();
             
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
@@ -288,10 +288,16 @@ public class AddressBooks
             });
             
             
-            KeyListener myKeyListener = new KeyListener() {
-                public void keyTyped(KeyEvent e) { System.out.println("keyTyped handled"); }
-                public void keyPressed(KeyEvent e) {  }
-                public void keyReleased(KeyEvent e) {  }
+            KeyListener myKeyListener = new KeyListener() 
+            {
+                
+            	public void keyTyped(KeyEvent e){}
+                public void keyPressed(KeyEvent e){}
+                public void keyReleased(KeyEvent e) 
+                { 
+                	String searchStr = searchField.getText();
+                	System.out.println(searchStr); 
+                }
             };
             searchField.addKeyListener(myKeyListener);
             
