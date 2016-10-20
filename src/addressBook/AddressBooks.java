@@ -78,7 +78,7 @@ public class AddressBooks
             public void actionPerformed(ActionEvent args)
             {
                 String bookName;
-                bookName = JOptionPane.showInputDialog("Book name");
+                bookName = JOptionPane.showInputDialog(null, "Book name", "Add", JOptionPane.INFORMATION_MESSAGE);
                 System.out.println(bookName);
                 myAddressBooks.add(new AddressBook(bookName));
                	updateBookLibrary();
@@ -212,7 +212,7 @@ public class AddressBooks
             this.Book = book;
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
-            JButton viewPersonButton = new JButton("Open");
+            JButton viewPersonButton = new JButton("Open/Edit");
             //JButton searchButton = new JButton("Search");			//Search button
             JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
