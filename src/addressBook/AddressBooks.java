@@ -80,7 +80,7 @@ public class AddressBooks
             public void actionPerformed(ActionEvent args)
             {
                 String bookName;
-                bookName = JOptionPane.showInputDialog(null, "Book name", "Add", JOptionPane.INFORMATION_MESSAGE);
+                bookName = JOptionPane.showInputDialog(null, "Book name", "Add Book", JOptionPane.INFORMATION_MESSAGE);
                 System.out.println(bookName);
                 if(bookName.isEmpty()){
                 	System.out.println("Error: Book name cannot be empty");
@@ -234,7 +234,6 @@ public class AddressBooks
             JButton addPersonButton = new JButton("Add");
             JButton deletePersonButton = new JButton("Delete");
             JButton viewPersonButton = new JButton("Open/Edit");
-            //JButton searchButton = new JButton("Search");			//Search button
             JButton zipSortButton = new JButton("ZIP sort");
             JButton nameSortButton = new JButton("Name sort");
             
@@ -299,7 +298,7 @@ public class AddressBooks
                 }
             });
             
-            //create key listener for dynamic search of contacts in asingle book
+            //create key listener for dynamic search of contacts in a single book
             KeyListener myKeyListener = new KeyListener() 
             {
                 
@@ -323,17 +322,7 @@ public class AddressBooks
             	}
             });
             */
-            
-            /*
-            searchButton.addActionListener(new ActionListener() 
-            {
-            	public void actionPerformed(ActionEvent args) 
-            	{
-            		System.out.println("Search button has been clicked");
-            	}
-            });
-            */
-            
+
             zipSortButton.addActionListener(new ActionListener() 	//action listener for button sorting contacts by zip
                                             {
                 public void actionPerformed(ActionEvent args)
@@ -370,19 +359,22 @@ public class AddressBooks
             JScrollPane scrollPane = new JScrollPane(jlist);
             scrollPane.setPreferredSize(new Dimension(300, 350));
             
+            //Label for search
+            JLabel searchLabel = new JLabel("Search: ");
+            
             Container contentPane = getContentPane();
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             contentPane.add(scrollPane);
-            //create panels for buttons in single book
+            //create panels for button3s in single book
             JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
             JPanel searchPanel = new JPanel(new GridLayout(1, 2));
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
             JPanel sortButtons = new JPanel(new GridLayout(1,3));
             
-            //Search Field: 
-            searchPanel.add(searchField);
-            //searchPanel.add(searchButton);
+            //Search Panel: 
+            searchPanel.add(searchLabel, BorderLayout.WEST);
+            searchPanel.add(searchField, BorderLayout.CENTER);
             
             //First line of buttons -- Add, Delete, View:
             addDeleteButtons.add(addPersonButton);
@@ -427,7 +419,7 @@ public class AddressBooks
         private String street;
         
         //All 50 states and some US territories -- in Alphabetical order of states then territories 
-        private String[] states = {" ", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
+        private String[] states = {"Select", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN",
 				"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
 				"NY", "NC", "ND", "OH","OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV",
 				"WI", "WY", "GU", "PR", "VI"};
@@ -468,6 +460,9 @@ public class AddressBooks
             for(int i = 0; i < 54; i++) {
             	stateMenu.addItem(states[i]);
             	}
+            
+            //Set text cfield size:
+            //firstNameField.setPreferredSize(new Dimension(12, 80));
             
             firstNameField.setText(c.getFirst());
             lastNameField.setText(c.getLast());
@@ -645,41 +640,40 @@ public class AddressBooks
             
             //Entry fields with appropriate labels
             JPanel labelPanel1 = new JPanel(new GridLayout(1, 2));
-            labelPanel1.add(firstNameLabel);
-            labelPanel1.add(firstNameField);
+            labelPanel1.add(firstNameLabel, BorderLayout.WEST);
+            labelPanel1.add(firstNameField, BorderLayout.CENTER);
             
             JPanel labelPanel2 = new JPanel(new GridLayout(1, 2));
-            labelPanel2.add(lastNameLabel);
-            labelPanel2.add(lastNameField);
+            labelPanel2.add(lastNameLabel, BorderLayout.WEST);
+            labelPanel2.add(lastNameField, BorderLayout.CENTER);
             
             JPanel labelPanel3 = new JPanel(new GridLayout(1, 2));
-            labelPanel3.add(phoneLabel);
-            labelPanel3.add(phoneField);
+            labelPanel3.add(phoneLabel, BorderLayout.WEST);
+            labelPanel3.add(phoneField, BorderLayout.CENTER);
             
             JPanel labelPanel4 = new JPanel(new GridLayout(1, 2));
-            labelPanel4.add(streetAddressLabel);
-            labelPanel4.add(streetAddressField);
+            labelPanel4.add(streetAddressLabel, BorderLayout.WEST);
+            labelPanel4.add(streetAddressField, BorderLayout.CENTER);
             
             JPanel labelPanel5 = new JPanel(new GridLayout(1, 2));
-            labelPanel5.add(aptNumLabel);
-            labelPanel5.add(aptNumField);
+            labelPanel5.add(aptNumLabel, BorderLayout.WEST);
+            labelPanel5.add(aptNumField, BorderLayout.CENTER);
             
             JPanel labelPanel6 = new JPanel(new GridLayout(1, 2));
-            labelPanel6.add(cityAddressLabel);
-            labelPanel6.add(cityAddressField);
+            labelPanel6.add(cityAddressLabel, BorderLayout.WEST);
+            labelPanel6.add(cityAddressField, BorderLayout.CENTER);
             
             JPanel labelPanel7 = new JPanel(new GridLayout(1, 2));
-            labelPanel7.add(stateAddressLabel);
-            //labelPanel7.add(stateAddressField);
-            labelPanel7.add(stateMenu);
+            labelPanel7.add(stateAddressLabel, BorderLayout.WEST);
+            labelPanel7.add(stateMenu, BorderLayout.CENTER);
             
             JPanel labelPanel8 = new JPanel(new GridLayout(1, 2));
-            labelPanel8.add(zipAddressLabel);
-            labelPanel8.add(zipAddressField);
+            labelPanel8.add(zipAddressLabel, BorderLayout.WEST);
+            labelPanel8.add(zipAddressField, BorderLayout.CENTER);
             
             JPanel labelPanel9 = new JPanel(new GridLayout(1, 2));
-            labelPanel9.add(emailLabel);
-            labelPanel9.add(emailField);
+            labelPanel9.add(emailLabel, BorderLayout.WEST);
+            labelPanel9.add(emailField, BorderLayout.CENTER);
             
             //Entry field panel -- holds all the text fields
             JPanel entryFieldPanel = new JPanel(new GridLayout(9, 1));
