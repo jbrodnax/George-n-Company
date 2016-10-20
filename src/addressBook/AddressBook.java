@@ -3,6 +3,7 @@ package addressBook;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class AddressBook implements Serializable {
@@ -13,6 +14,7 @@ public class AddressBook implements Serializable {
 	
 	//public Contacts[] entries;			//Array of Contacts for this.AddressBook
 	ArrayList<Contacts> entries = new ArrayList<Contacts>();
+	ArrayList<String> nameSort = new ArrayList<String>();
 	private String bookName;
 
 	//Initializes new AddressBook
@@ -24,6 +26,13 @@ public class AddressBook implements Serializable {
 	//Adds new Contact instance to this book's entries array
 	public void addContact(Contacts c){
 		entries.add(c);
+	}
+	
+	public void sortByName(){
+		nameSort.clear();
+		for(int i=0;i<entries.size();i++){
+			nameSort.add(entries.get(i).getName());
+		}
 	}
 	
 	//Loops through entries array and prints all entry fields of each contact found in the entries array

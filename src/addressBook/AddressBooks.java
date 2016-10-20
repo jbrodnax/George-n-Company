@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AddressBooks
 {
@@ -124,6 +126,10 @@ public class AddressBooks
             public void actionPerformed(ActionEvent args)
             {
                 int index = jlist.getSelectedIndex();
+                if(index < 0 || index > myAddressBooks.size()){
+                	System.out.println("Error: Invalid book selected.");
+                	return;
+                }
                 AddressBook book = myAddressBooks.get(index);
                	System.out.println("Opening Book: "+book.getBookName()+"\n");
                	
@@ -201,6 +207,7 @@ public class AddressBooks
             ContactListModel.clear();
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
+                //Collections.sort(ContactListModel);
             }
         }
         
