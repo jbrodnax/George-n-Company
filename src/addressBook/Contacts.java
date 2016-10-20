@@ -2,6 +2,7 @@ package addressBook;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Contacts implements Serializable {
 	
@@ -83,6 +84,22 @@ public class Contacts implements Serializable {
 		addEntryField("Phone", this.phone);
 		addEntryField("Email", this.email);
 	}
+	
+	public static Comparator<Contacts> ContactNameComparator = new Comparator<Contacts>(){
+		public int compare(Contacts c1, Contacts c2){
+			String name1 = c1.getFirst();
+			String name2 = c2.getFirst();
+			return name1.compareTo(name2);
+		}
+	};
+	
+	public static Comparator<Contacts> ContactZipComparator = new Comparator<Contacts>(){
+		public int compare(Contacts c1, Contacts c2){
+			int zip1 = Integer.parseInt(c1.getZipAddress());
+			int zip2 = Integer.parseInt(c2.getZipAddress());
+			return zip1 - zip2;
+		}
+	};
 	
 	public void addEntryField(String type, String info){
 		Info.add(new EntryField(type, info));

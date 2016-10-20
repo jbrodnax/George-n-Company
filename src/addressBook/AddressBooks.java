@@ -21,6 +21,7 @@ public class AddressBooks
 
     public void updateBookLibrary(){											//called when a new book is created. it updates the listOfBooks
         bookListModel.clear();													//to display the newly created book
+        Collections.sort(myAddressBooks, AddressBook.AddressBookNameComparator);
         for(int i=0;i<myAddressBooks.size();i++){
             bookListModel.addElement(myAddressBooks.get(i).getBookName());
         }
@@ -81,6 +82,15 @@ public class AddressBooks
                 String bookName;
                 bookName = JOptionPane.showInputDialog(null, "Book name", "Add", JOptionPane.INFORMATION_MESSAGE);
                 System.out.println(bookName);
+                if(bookName.isEmpty()){
+                	System.out.println("Error: Book name cannot be empty");
+                	JOptionPane.showMessageDialog(null, "Please enter in a book name!", "Error", JOptionPane.ERROR_MESSAGE);
+                	return;
+                }else if(bookListModel.contains(bookName)){
+                	System.out.println("Error: Book name already exists");
+                	JOptionPane.showMessageDialog(null, "This has the same name as another book!  Please enter another name.", "Error", JOptionPane.ERROR_MESSAGE);
+                	return;
+                }
                 myAddressBooks.add(new AddressBook(bookName));
                	updateBookLibrary();
                 /* Check if book has the same name as another book:
@@ -204,10 +214,14 @@ public class AddressBooks
         
         public void updateContactList(){
             ContactListModel.clear();
+            Book.updateEntries();
             for(int i=0;i<Book.entries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
-                //Collections.sort(ContactListModel);
             }
+        }
+        
+        public void nameSort(){
+        	
         }
         
         public OpenBookFrame(AddressBook book)
@@ -235,12 +249,10 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                     System.out.println("add person button clicked");
-                    //Contacts fake_person = new Contacts("John", "Brodnax", "1515 Riverview", "" ,"Eugene", "OR", "97403", "5124669790", "jbrodnax");
-                    //Book.addContact(fake_person);
                     Contacts new_person = new Contacts();
                     Book.addContact(new_person);
                     createContactPages(new_person, thisFrame);
-                    updateContactList();
+                    //updateContactList();
                 }
             });
             
@@ -327,6 +339,8 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                     System.out.println("zip sort button clicked");
+                    Book.setZipSort();
+                    updateContactList();
                     //////////////////////////////////////////////////this is where you call the function
                     /////////////////////////////////////////////////that sorts by zip
                 }
@@ -337,6 +351,8 @@ public class AddressBooks
                 public void actionPerformed(ActionEvent args)
                 {
                     System.out.println("name sort button clicked");
+                    Book.setNameSort();
+                    updateContactList();
                     //////////////////////////////////////////////////this is where you call the function
                     /////////////////////////////////////////////////that sorts by name
                 }
