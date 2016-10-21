@@ -11,9 +11,10 @@ public class Serializer {
 
 	//Serialize AddressBook class to be saved to Desktop
 	//File output is hardcoded for now to my Desktop
-	public void serializeBook(AddressBook aBook){
+	public static void serializeBook(AddressBook aBook){
 		try{
-			FileOutputStream fout = new FileOutputStream("aBook.ser");
+			String bookName = aBook.getBookName();
+			FileOutputStream fout = new FileOutputStream("Books/"+bookName);
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(aBook);
 			oos.close();

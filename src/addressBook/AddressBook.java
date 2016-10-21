@@ -14,9 +14,12 @@ public class AddressBook implements Serializable {
 	private static final long serialVersionUID = 5372416145887794709L;
 	public boolean SortByName;
 	public boolean SortByZIP;
+	public boolean isSearch;
+	private String searchStr;
 	
 	//public Contacts[] entries;			//Array of Contacts for this.AddressBook
-	ArrayList<Contacts> entries = new ArrayList<Contacts>();
+	ArrayList<Contacts> entries = new ArrayList<Contacts>();	//this array holds all contacts
+	ArrayList<Contacts> searchEntries = new ArrayList<Contacts>();	//this array holds "searched" contacts
 	
 	private String bookName;
 
@@ -26,6 +29,29 @@ public class AddressBook implements Serializable {
 		bookName = Name;
 		this.SortByName = true;
 		this.SortByZIP = false;
+		this.isSearch = false;
+		this.searchStr = "";
+		
+	}
+	
+	public void searchContacts(String s){
+		this.isSearch = true;
+		//updateEntries();
+		this.searchStr = s;
+		searchEntries.clear();
+		if(s.isEmpty()){
+			for(int i=0;i<entries.size();i++){
+				searchEntries.add(entries.get(i));
+			}
+			return;
+		}
+		for(int i=0;i<entries.size();i++){
+			if(entries.get(i).getName().toUpperCase().contains(s.toUpperCase())){
+				searchEntries.add(entries.get(i));
+				//Collections.sort(searchEntries, Contacts.ContactNameComparator);
+			}
+		}
+		return;
 	}
 	
 	public void updateEntries(){
@@ -34,6 +60,7 @@ public class AddressBook implements Serializable {
 		}else{
 			Collections.sort(entries, Contacts.ContactZipComparator);
 		}
+		searchContacts(this.searchStr);
 	}
 	
 	public static Comparator<AddressBook> AddressBookNameComparator = new Comparator<AddressBook>(){
@@ -89,14 +116,29 @@ public class AddressBook implements Serializable {
 		return -1;
 	}
 	
+	public int searchIndexToEntries(int i){
+		for(int j=0;j<entries.size();j++){
+			if(searchEntries.get(i) == entries.get(j)){
+				return j;
+			}
+		}
+		return -1;
+	}
+	
 	public void deleteContactAt(int i){
-		entries.remove(i);
+		int j = searchIndexToEntries(i);
+		if(j == -1){
+			System.out.println("Error: searchIndexToEntries failed");
+			return;
+		}
+		entries.remove(j);
 		updateEntries();
 	}
 	
 	public Contacts getContact(int index){
 		Contacts c;
-		c = entries.get(index);
+		c = searchEntries.get(index);
+		//c = entries.get(index);
 		return c;
 	}
 	

@@ -1,6 +1,12 @@
 package addressBook;
 
-public class EntryField {
+import java.io.Serializable;
+
+public class EntryField implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9178576744849601650L;
 	private String InfoType;
 	private String Info;
 	

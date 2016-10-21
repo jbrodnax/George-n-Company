@@ -87,8 +87,8 @@ public class Contacts implements Serializable {
 	
 	public static Comparator<Contacts> ContactNameComparator = new Comparator<Contacts>(){
 		public int compare(Contacts c1, Contacts c2){
-			String name1 = c1.getFirst();
-			String name2 = c2.getFirst();
+			String name1 = c1.getFirst().toUpperCase();
+			String name2 = c2.getFirst().toUpperCase();
 			return name1.compareTo(name2);
 		}
 	};

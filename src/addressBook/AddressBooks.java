@@ -7,17 +7,70 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AddressBooks
+public class AddressBooks implements Serializable
 {
-    final static String CREATE_WINDOW = "new_win";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	final static String CREATE_WINDOW = "new_win";
     private Point framePlace = null;											//holds screen placement of frames
     ArrayList<AddressBook> myAddressBooks = new ArrayList<AddressBook>();
     DefaultListModel<String> bookListModel = new DefaultListModel<String>();
     JList<String> jlist = new JList<String>(bookListModel);
+    
+    private void loadBooks(String bookName) throws ClassNotFoundException, IOException{
+    	AddressBook book = (AddressBook) Serializer.deserialize("Books/"+bookName);
+    	myAddressBooks.add(book);
+    	updateBookLibrary();
+    }
+    
+    public void listFilesForFolder(final File folder) {
+    	if (!folder.exists()) {
+    	    System.out.println("creating directory: ");
+    	    boolean result = false;
+
+    	    try{
+    	        folder.mkdir();
+    	        result = true;
+    	    } 
+    	    catch(SecurityException se){
+    	        //handle it
+    	    }        
+    	    if(result) {    
+    	        System.out.println("DIR created");  
+    	    }
+    	}
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                listFilesForFolder(fileEntry);
+            } else {
+                System.out.println(fileEntry.getName());
+                if(!fileEntry.getName().contains(".DS_Store")){
+                	try {
+                		loadBooks(fileEntry.getName());
+                	} catch (ClassNotFoundException e) {
+                		// TODO Auto-generated catch block
+                		e.printStackTrace();
+                	} catch (IOException e) {
+                		// TODO Auto-generated catch block
+                		e.printStackTrace();
+                	}
+                }
+            }
+        }
+    }
 
     public void updateBookLibrary(){											//called when a new book is created. it updates the listOfBooks
         bookListModel.clear();													//to display the newly created book
@@ -67,7 +120,7 @@ public class AddressBooks
     	  	return bookLibrary;
     }
     
-    protected JComponent bookListButtonPane() 					//Create the buttons which go in the book list window
+    protected JComponent bookListButtonPane() throws ClassNotFoundException, IOException 					//Create the buttons which go in the book list window
     {
         JButton addBookButton = new JButton("Add");
         JButton deleteBookButton = new JButton("Delete");
@@ -93,6 +146,8 @@ public class AddressBooks
                 }
                 myAddressBooks.add(new AddressBook(bookName));
                	updateBookLibrary();
+               	Serializer.serializeBook(myAddressBooks.get(myAddressBooks.size()-1));
+               	System.out.println(myAddressBooks.get(myAddressBooks.size()-1).getBookName());
                 /* Check if book has the same name as another book:
                 * JOptionPane.showMessageDialog(null, "This has the same name as another book!  Please enter another name.", "Error", JOptionPane.ERROR_MESSAGE);
                	* Check for blank book name:
@@ -119,8 +174,10 @@ public class AddressBooks
                     	System.out.println("Error: index is out of range");
                     	return;
                     }else{
+                    	File file = new File("Books/"+myAddressBooks.get(index).getBookName());
                     	myAddressBooks.remove(index);
                     	updateBookLibrary();
+                    	file.delete();
                     }
                 }
                 else if (confirm == JOptionPane.CLOSED_OPTION)
@@ -182,14 +239,19 @@ public class AddressBooks
         secondLine.add(exportBookButton);
         bookList.add(firstLine);
         bookList.add(secondLine);
+        //loadBooks();
         return bookList;
     }
     
-    private static void runGUI() 	//create the initial GUI window
+    private static void runGUI() throws ClassNotFoundException, IOException 	//create the initial GUI window
     {
         JFrame bookListFrame = new JFrame("All Address Books");			//make window with address books listed
         bookListFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//exit program when you close this window
         AddressBooks bookList = new AddressBooks();
+        //bookList.loadBooks();
+        final File folder = new File("Books/");
+        bookList.listFilesForFolder(folder);
+        bookList.updateBookLibrary();
         Container contentPane = bookListFrame.getContentPane();
         contentPane.add(bookList.bookListButtonPane(), BorderLayout.PAGE_END);
         contentPane.add(bookList.bookListLibraryPane(), BorderLayout.PAGE_START);
@@ -199,15 +261,19 @@ public class AddressBooks
         bookListFrame.pack();
     }
     
-    public static void main(String[] args)	//run the program
+    public static void main(String[] args) throws ClassNotFoundException, IOException	//run the program
     {
         runGUI();
     }
     
-    class OpenBookFrame extends JFrame implements ActionListener //create the window for a single book to display contacts etc
+    class OpenBookFrame extends JFrame implements ActionListener, Serializable //create the window for a single book to display contacts etc
     {
         
-        private AddressBook Book;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private AddressBook Book;
         DefaultListModel<String> ContactListModel = new DefaultListModel<String>();
         JList<String> jlist = new JList<String>(ContactListModel);
         OpenBookFrame thisFrame = this;
@@ -215,13 +281,9 @@ public class AddressBooks
         public void updateContactList(){
             ContactListModel.clear();
             Book.updateEntries();
-            for(int i=0;i<Book.entries.size();i++){
+            for(int i=0;i<Book.searchEntries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
             }
-        }
-        
-        public void nameSort(){
-        	
         }
         
         public OpenBookFrame(AddressBook book)
@@ -239,7 +301,7 @@ public class AddressBooks
             
             JTextField searchField = new JTextField();		//create a dynamic search field for finding contacts
             
-            for(int i=0;i<Book.entries.size();i++){
+            for(int i=0;i<Book.searchEntries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
             }
             
@@ -251,6 +313,7 @@ public class AddressBooks
                     Contacts new_person = new Contacts();
                     Book.addContact(new_person);
                     createContactPages(new_person, thisFrame);
+                    Serializer.serializeBook(Book);
                     //updateContactList();
                 }
             });
@@ -270,7 +333,8 @@ public class AddressBooks
                         System.out.println("Yes button in delete person clicked");
                         int index = jlist.getSelectedIndex();
                         if(index >= 0 && index <= ContactListModel.size()){
-                        	Book.deleteContactAt(index);
+                        	int i = Book.haveContact(ContactListModel.getElementAt(index));
+                        	Book.deleteContactAt(i);
                         	updateContactList();
                         }
                     }
@@ -287,7 +351,8 @@ public class AddressBooks
                 {
                     int index = jlist.getSelectedIndex();
                     if(index >= 0 && index <= ContactListModel.size()){
-                        Contacts c = Book.getContact(index);
+                    	int i = Book.haveContact(ContactListModel.getElementAt(index));
+                        Contacts c = Book.getContact(i);
                         c.setEditable(false);
                         createContactPages(c, thisFrame);  //Need it to adjust it to simply opening a new book
                         System.out.println("view person button clicked");
@@ -308,6 +373,8 @@ public class AddressBooks
                 { 
                 	String searchStr = searchField.getText();
                 	System.out.println(searchStr); 
+                	Book.searchContacts(searchStr);
+                	updateContactList();
                 }
             };
             searchField.addKeyListener(myKeyListener);
@@ -330,8 +397,6 @@ public class AddressBooks
                     System.out.println("zip sort button clicked");
                     Book.setZipSort();
                     updateContactList();
-                    //////////////////////////////////////////////////this is where you call the function
-                    /////////////////////////////////////////////////that sorts by zip
                 }
             });
             
@@ -342,8 +407,7 @@ public class AddressBooks
                     System.out.println("name sort button clicked");
                     Book.setNameSort();
                     updateContactList();
-                    //////////////////////////////////////////////////this is where you call the function
-                    /////////////////////////////////////////////////that sorts by name
+                   
                 }
             });
 
@@ -400,9 +464,13 @@ public class AddressBooks
         }
     }
    
-    class ContactPages extends JFrame implements ActionListener
+    class ContactPages extends JFrame implements ActionListener, Serializable
     {
-        //add elements to single contact
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		//add elements to single contact
         public Contacts Contact;
         public OpenBookFrame BookFrame;
         private AddressBook Book;
@@ -467,7 +535,7 @@ public class AddressBooks
             firstNameField.setText(c.getFirst());
             lastNameField.setText(c.getLast());
             streetAddressField.setText(c.getStreetAddress());
-            aptNumField.setText(c.getStreetAddress());
+            aptNumField.setText(c.getStreetAddress2());
             stateMenu.setSelectedIndex(c.getStateIndex());
             cityAddressField.setText(c.getCityAddress());
             zipAddressField.setText(c.getZipAddress());
@@ -529,6 +597,9 @@ public class AddressBooks
                     if(street != Contact.getStreetAddress()){
                     	Contact.setStreetAddress(street);
                     }
+                    if(aptNum != Contact.getStreetAddress2()){
+                    	Contact.setStreetAddress2(aptNum);
+                    }
                     if(city != Contact.getCityAddress()){
                     	Contact.setCityAddress(city);
                     }
@@ -538,8 +609,9 @@ public class AddressBooks
                     if(email != Contact.getEmail()){
                     	Contact.setEmail(email);
                     }
-                    //add aptNum
+                    
                     BookFrame.updateContactList();
+                    Serializer.serializeBook(bookFrame.Book);
                     dispose();
                 }
                 //Check for ZIP code format before saving
