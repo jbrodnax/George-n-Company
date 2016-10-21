@@ -7,9 +7,14 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -215,6 +220,41 @@ public class AddressBooks implements Serializable
             {
                 String fileName;
                 fileName = JOptionPane.showInputDialog(null, "Enter file to import from", "Import", JOptionPane.INFORMATION_MESSAGE);	//creates import book dialogue box
+             // The name of the file to open.
+                fileName += ".txt";
+
+                // This will reference one line at a time
+                String line = null;
+
+                try {
+                    // FileReader reads text files in the default encoding.
+                    FileReader fileReader = 
+                        new FileReader(fileName);
+
+                    // Always wrap FileReader in BufferedReader.
+                    BufferedReader bufferedReader = 
+                        new BufferedReader(fileReader);
+
+                    while((line = bufferedReader.readLine()) != null) {
+                        System.out.println(line);
+                    }   
+
+                    // Always close files.
+                    bufferedReader.close();         
+                }
+                catch(FileNotFoundException ex) {
+                    System.out.println(
+                        "Unable to open file '" + 
+                        fileName + "'");                
+                }
+                catch(IOException ex) {
+                    System.out.println(
+                        "Error reading file '" 
+                        + fileName + "'");                  
+                    // Or we could just do this: 
+                    // ex.printStackTrace();
+                }
+            
             }
         });
         
@@ -224,6 +264,26 @@ public class AddressBooks implements Serializable
             {
                 String bookName;
                 bookName = JOptionPane.showInputDialog(null, "Enter file to export to", "Export", JOptionPane.INFORMATION_MESSAGE);	//creates export book dialogue box
+                int index = jlist.getSelectedIndex();
+                if(index < 0 || index > myAddressBooks.size()){
+                	System.out.println("Error: Invalid book selected.");
+                	return;
+                }
+                AddressBook book = myAddressBooks.get(index);
+                PrintWriter writer;
+				try {
+					writer = new PrintWriter(bookName+".txt", "UTF-8");
+					writer.println("The first line");
+	                writer.println("The second line");
+	                writer.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+          
             }
         });
         //add the buttons to the window displaying the list of address books
@@ -284,6 +344,7 @@ public class AddressBooks implements Serializable
             for(int i=0;i<Book.searchEntries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
             }
+            //+""+Book.getContact(i).getPhone()
         }
         
         public OpenBookFrame(AddressBook book)

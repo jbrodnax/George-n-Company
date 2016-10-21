@@ -95,9 +95,12 @@ public class Contacts implements Serializable {
 	
 	public static Comparator<Contacts> ContactZipComparator = new Comparator<Contacts>(){
 		public int compare(Contacts c1, Contacts c2){
-			int zip1 = Integer.parseInt(c1.getZipAddress());
-			int zip2 = Integer.parseInt(c2.getZipAddress());
-			return zip1 - zip2;
+			if(!c1.getZipAddress().isEmpty() && !c2.getZipAddress().isEmpty()){
+				int zip1 = Integer.parseInt(c1.getZipAddress());
+				int zip2 = Integer.parseInt(c2.getZipAddress());
+				return zip1 - zip2;
+			}
+			return 2;	
 		}
 	};
 	
@@ -110,14 +113,14 @@ public class Contacts implements Serializable {
 		System.out.println("Last Name: "+getLast());
 		System.out.println("Address: "+getAddress());
 		System.out.println("Email: "+getEmail());
+		//String printExport = 
 	}
 	
 	public String getContactInfo(){
 		String contactInfo = "";
 		for(int i=0;i<Info.size();i++){
 			EntryField e = Info.get(i);
-			contactInfo+=e.getInfoType()+": ";
-			contactInfo+=e.getInfo()+"\n";
+			contactInfo+=e.getInfo()+"\\t";
 		}
 		return contactInfo;
 	}
