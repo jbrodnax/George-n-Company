@@ -79,12 +79,12 @@ public class AddressBooks implements Serializable
             bookListModel.addElement(myAddressBooks.get(i).getBookName());
         }
     }
-    //creat windows that display fields for each single contact
+    //create windows that display fields for each single contact
     public void createContactPages(Contacts c, OpenBookFrame b)
     {
         JFrame contactPage = new ContactPages(c, b);
         positionWindow(contactPage);
-        contactPage.setPreferredSize(new Dimension(275, 300));
+        contactPage.setPreferredSize(new Dimension(350, 400));
         contactPage.setVisible(true);
         contactPage.pack();
     }
@@ -432,12 +432,13 @@ public class AddressBooks implements Serializable
             contentPane.add(scrollPane);
             //create panels for button3s in single book
             JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
-            JPanel searchPanel = new JPanel(new GridLayout(1, 2));
+            JPanel searchPanel = new JPanel();
             JPanel addDeleteButtons = new JPanel(new GridLayout(1,3));
             JPanel sortButtons = new JPanel(new GridLayout(1,3));
             
             //Search Panel: 
             searchPanel.add(searchLabel, BorderLayout.WEST);
+            searchField.setPreferredSize(new Dimension(275, 35));
             searchPanel.add(searchField, BorderLayout.CENTER);
             
             //First line of buttons -- Add, Delete, View:
@@ -498,7 +499,6 @@ public class AddressBooks implements Serializable
             this.BookFrame = bookFrame;
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             
-            
             JButton saveButton = new JButton("Save");
             JButton cancelButton = new JButton("Cancel");
             
@@ -529,9 +529,17 @@ public class AddressBooks implements Serializable
             	stateMenu.addItem(states[i]);
             	}
             
-            //Set text cfield size:
-            //firstNameField.setPreferredSize(new Dimension(12, 80));
+            //Set text field sizes:
+            firstNameField.setPreferredSize(new Dimension(200, 30));
+            lastNameField.setPreferredSize(new Dimension(200, 30));
+            phoneField.setPreferredSize(new Dimension(200, 30));
+            streetAddressField.setPreferredSize(new Dimension(200, 30));
+            aptNumField.setPreferredSize(new Dimension(200, 30));
+            cityAddressField.setPreferredSize(new Dimension(200, 30));
+            zipAddressField.setPreferredSize(new Dimension(200, 30));
+            emailField.setPreferredSize(new Dimension(200, 30));
             
+            //Getting text
             firstNameField.setText(c.getFirst());
             lastNameField.setText(c.getLast());
             streetAddressField.setText(c.getStreetAddress());
@@ -695,7 +703,7 @@ public class AddressBooks implements Serializable
                 }
             });
             
-            //Labels to show --> need to center labels?
+            //Labels to show 
             firstNameLabel.setOpaque(true);
             lastNameLabel.setOpaque(true);
             phoneLabel.setOpaque(true);
@@ -710,54 +718,75 @@ public class AddressBooks implements Serializable
             contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
             contentPane.add(Box.createVerticalGlue()); //takes all extra space
             
-            //Entry fields with appropriate labels
-            JPanel labelPanel1 = new JPanel(new GridLayout(1, 2));
-            labelPanel1.add(firstNameLabel, BorderLayout.WEST);
-            labelPanel1.add(firstNameField, BorderLayout.CENTER);
+   			//Anchors
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 10, 5, 10);
             
-            JPanel labelPanel2 = new JPanel(new GridLayout(1, 2));
-            labelPanel2.add(lastNameLabel, BorderLayout.WEST);
-            labelPanel2.add(lastNameField, BorderLayout.CENTER);
+            //Labels: 
+            JPanel entryPanel1 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel1.add(firstNameLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel1.add(firstNameField, gbc);
+
+            JPanel entryPanel2 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel2.add(lastNameLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel2.add(lastNameField, gbc);
+
+            JPanel entryPanel3 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel3.add(phoneLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel3.add(phoneField, gbc);
             
-            JPanel labelPanel3 = new JPanel(new GridLayout(1, 2));
-            labelPanel3.add(phoneLabel, BorderLayout.WEST);
-            labelPanel3.add(phoneField, BorderLayout.CENTER);
-            
-            JPanel labelPanel4 = new JPanel(new GridLayout(1, 2));
-            labelPanel4.add(streetAddressLabel, BorderLayout.WEST);
-            labelPanel4.add(streetAddressField, BorderLayout.CENTER);
-            
-            JPanel labelPanel5 = new JPanel(new GridLayout(1, 2));
-            labelPanel5.add(aptNumLabel, BorderLayout.WEST);
-            labelPanel5.add(aptNumField, BorderLayout.CENTER);
-            
-            JPanel labelPanel6 = new JPanel(new GridLayout(1, 2));
-            labelPanel6.add(cityAddressLabel, BorderLayout.WEST);
-            labelPanel6.add(cityAddressField, BorderLayout.CENTER);
-            
-            JPanel labelPanel7 = new JPanel(new GridLayout(1, 2));
-            labelPanel7.add(stateAddressLabel, BorderLayout.WEST);
-            labelPanel7.add(stateMenu, BorderLayout.CENTER);
-            
-            JPanel labelPanel8 = new JPanel(new GridLayout(1, 2));
-            labelPanel8.add(zipAddressLabel, BorderLayout.WEST);
-            labelPanel8.add(zipAddressField, BorderLayout.CENTER);
-            
-            JPanel labelPanel9 = new JPanel(new GridLayout(1, 2));
-            labelPanel9.add(emailLabel, BorderLayout.WEST);
-            labelPanel9.add(emailField, BorderLayout.CENTER);
-            
-            //Entry field panel -- holds all the text fields
+            JPanel entryPanel4 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel4.add(streetAddressLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel4.add(streetAddressField, gbc);
+
+            JPanel entryPanel5 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel5.add(aptNumLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel5.add(aptNumField, gbc);
+
+            JPanel entryPanel6 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel6.add(cityAddressLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel6.add(cityAddressField, gbc);
+
+            JPanel entryPanel7 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel7.add(stateAddressLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel7.add(stateMenu, gbc);
+
+            JPanel entryPanel8 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel8.add(zipAddressLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel8.add(zipAddressField, gbc);
+
+            JPanel entryPanel9 = new JPanel();
+            gbc.anchor = GridBagConstraints.EAST;
+            entryPanel9.add(emailLabel, gbc);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            entryPanel9.add(emailField, gbc);
+
             JPanel entryFieldPanel = new JPanel(new GridLayout(9, 1));
-            entryFieldPanel.add(labelPanel1);
-            entryFieldPanel.add(labelPanel2);
-            entryFieldPanel.add(labelPanel3);
-            entryFieldPanel.add(labelPanel4);
-            entryFieldPanel.add(labelPanel5);
-            entryFieldPanel.add(labelPanel6);
-            entryFieldPanel.add(labelPanel7);
-            entryFieldPanel.add(labelPanel8);
-            entryFieldPanel.add(labelPanel9);
+            entryFieldPanel.add(entryPanel1);
+            entryFieldPanel.add(entryPanel2);
+            entryFieldPanel.add(entryPanel3);
+            entryFieldPanel.add(entryPanel4);
+            entryFieldPanel.add(entryPanel5);
+            entryFieldPanel.add(entryPanel6);
+            entryFieldPanel.add(entryPanel7);
+            entryFieldPanel.add(entryPanel8);
+            entryFieldPanel.add(entryPanel9);
             
             contentPane.add(entryFieldPanel);
             
@@ -766,7 +795,7 @@ public class AddressBooks implements Serializable
             buttonPanel.add(saveButton);
             buttonPanel.add(cancelButton);
             contentPane.add(buttonPanel);
-            //button.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
+            buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT); //horizontally centered
         }
         @Override
         public void actionPerformed(ActionEvent e) 
