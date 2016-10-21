@@ -219,8 +219,10 @@ public class AddressBooks implements Serializable
             public void actionPerformed(ActionEvent args)
             {
                 String fileName;
+                String contactInfoStr="";
                 fileName = JOptionPane.showInputDialog(null, "Enter file to import from", "Import", JOptionPane.INFORMATION_MESSAGE);	//creates import book dialogue box
              // The name of the file to open.
+                String bookName = fileName;
                 fileName += ".txt";
 
                 // This will reference one line at a time
@@ -237,6 +239,8 @@ public class AddressBooks implements Serializable
 
                     while((line = bufferedReader.readLine()) != null) {
                         System.out.println(line);
+                        contactInfoStr+=line;
+                        
                     }   
 
                     // Always close files.
@@ -254,6 +258,38 @@ public class AddressBooks implements Serializable
                     // Or we could just do this: 
                     // ex.printStackTrace();
                 }
+                String[] arr = contactInfoStr.split("\t");
+                myAddressBooks.add(new AddressBook(bookName));
+                AddressBook importBook = myAddressBooks.get(myAddressBooks.size()-1);
+                int i=0;
+                int n = arr.length;
+                System.out.println("Length: "+(char) n);
+                while(i<n){
+                	System.out.println(arr[i]);
+                	Contacts c = new Contacts();
+                	importBook.addContact(c);
+                	c.setFirst(arr[i]);
+                	c.setLast(arr[i+1]);
+                	System.out.println(arr[i+1]);
+                	c.setStreetAddress(arr[i+2]);
+                	System.out.println(arr[i+2]);
+                	c.setStreetAddress2(arr[i+3]);
+                	System.out.println(arr[i+3]);
+                	c.setCityAddress(arr[i+4]);
+                	System.out.println(arr[i+4]);
+                	//c.setStateIndex(Integer.parseInt(arr[i+5]));
+                	//System.out.println(arr[i+5]);
+                	c.setZipAddress(arr[i+6]);
+                	System.out.println(arr[i+6]);
+                	c.setPhone(arr[i+7]);
+                	System.out.println(arr[i+7]);
+                	c.setEmail(arr[i+8]);
+                	System.out.println(arr[i+8]);
+                	i+=9;
+                }
+                updateBookLibrary();
+               	Serializer.serializeBook(myAddressBooks.get(myAddressBooks.size()-1));
+               	System.out.println(myAddressBooks.get(myAddressBooks.size()-1).getBookName());
             
             }
         });
@@ -263,6 +299,7 @@ public class AddressBooks implements Serializable
             public void actionPerformed(ActionEvent args)
             {
                 String bookName;
+                String contactInfoStr;
                 bookName = JOptionPane.showInputDialog(null, "Enter file to export to", "Export", JOptionPane.INFORMATION_MESSAGE);	//creates export book dialogue box
                 int index = jlist.getSelectedIndex();
                 if(index < 0 || index > myAddressBooks.size()){
@@ -270,11 +307,13 @@ public class AddressBooks implements Serializable
                 	return;
                 }
                 AddressBook book = myAddressBooks.get(index);
+                book.printContacts();
+                contactInfoStr = book.exportContacts();
                 PrintWriter writer;
 				try {
 					writer = new PrintWriter(bookName+".txt", "UTF-8");
-					writer.println("The first line");
-	                writer.println("The second line");
+					writer.println(contactInfoStr);
+	                //writer.println("The second line");
 	                writer.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -344,7 +383,7 @@ public class AddressBooks implements Serializable
             for(int i=0;i<Book.searchEntries.size();i++){
                 ContactListModel.addElement(Book.getContact(i).getName());
             }
-            //+""+Book.getContact(i).getPhone()
+            
         }
         
         public OpenBookFrame(AddressBook book)

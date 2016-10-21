@@ -79,12 +79,30 @@ public class AddressBook implements Serializable {
 	
 	//Loops through entries array and prints all entry fields of each contact found in the entries array
 	public void printContacts(){
+		String contactInfo = null;
 		if(entries.size() > 0){
+			contactInfo = "";
 			for (int i=0;i<entries.size();i++)
-				entries.get(i).printContact();
+				contactInfo = entries.get(i).getContactInfo();
+				System.out.println(contactInfo);
 		}else{
 			System.out.println("You have no friends.. Try making some.");
 		}
+	}
+	
+	public String exportContacts(){
+		String contactInfo = null;
+		if(entries.size() > 0){
+			contactInfo = "";
+			for (int i=0;i<entries.size();i++){
+				contactInfo += entries.get(i).getContactInfo();
+				//System.out.println(contactInfo);
+			}
+			contactInfo += "\n";
+		}else{
+			System.out.println("You have no friends.. Try making some.");
+		}
+		return contactInfo;
 	}
 	
 	public int numContacts(){

@@ -120,8 +120,8 @@ public class Contacts implements Serializable {
 		String contactInfo = "";
 		for(int i=0;i<Info.size();i++){
 			EntryField e = Info.get(i);
-			contactInfo+=e.getInfo()+"\\t";
-		}
+				contactInfo+=e.getInfo()+"\t";
+			}
 		return contactInfo;
 	}
 	
