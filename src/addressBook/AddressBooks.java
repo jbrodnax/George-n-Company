@@ -336,6 +336,7 @@ public class AddressBooks implements Serializable
                         	int i = Book.haveContact(ContactListModel.getElementAt(index));
                         	Book.deleteContactAt(i);
                         	updateContactList();
+                        	Serializer.serializeBook(Book);
                         }
                     }
                     else if (confirm == JOptionPane.CLOSED_OPTION)
